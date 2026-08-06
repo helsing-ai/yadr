@@ -1,0 +1,16 @@
+# Store and check out every text file with LF endings, on every platform.
+#
+# The test suite compares yadr's output against text checked in here, so a CRLF working tree fails
+# it for reasons unrelated to the code. This is deliberately repo-wide rather than scoped to the
+# fixtures, because three separate layers depend on it:
+#
+#   - tests/fixtures/**, which the CLI tests parse and then assert on,
+#   - tests/snapshots/**, which insta compares byte for byte,
+#   - tests/instas.rs and src/lib.rs, which embed source text as string literals and assert on what
+#     it parses to. A doctest comparing a parsed "a\nb" against a literal "a\nb" fails if the file
+#     it lives in was checked out with CRLF, because only the parsed side picks up the \r.
+#
+# `text=auto eol=lf` rather than `-text`: `-text` only stops git converting, which freezes whatever
+# happens to be committed. It would not stop a CRLF file entering the repository in the first
+# place, and once one did it would be checked out that way everywhere.
+* text=auto eol=lf

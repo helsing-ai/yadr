@@ -1,0 +1,16 @@
+---
+source: tests/instas.rs
+expression: "format! (\"{e:?}\")"
+---
+  x in comment on line 2
+  |-> in Y-Statement starting on line 2
+  `-> Y-Statement change entry did not match expected format: expected four digit year (or leading sign for six digit year), but found end of input
+    ,-[13:1]
+ 10 | Here's a tail.
+ 11 | 
+ 12 | 2023-12-01: changed thing 1
+ 13 | 000: changed thing 2
+    : ^|^
+    :  `-- expected YYYY-MM-DD
+ 14 | 2023-12-03: changed thing 3
+    `----

@@ -1,0 +1,19 @@
+---
+source: tests/instas.rs
+expression: "format!(\"{e:?}\")"
+---
+  x in comment on line 2
+  |-> in Y-Statement starting on line 2
+  `-> found ADR change in the middle of a YADR block
+    ,-[12:1]
+  9 | 
+ 10 | 2023-12-01: changed thing 1
+ 11 | 2023-12-02: changed thing 2
+ 12 | 2023-12-03: changed thing 3
+    : ^^^^^^^^^^^^^|^^^^^^^^^^^^^
+    :              `-- this looks like an ADR change entry
+ 13 | 
+ 14 | Here's a tail.
+    `----
+  help: move the change entries to the end of the YADR block
+

@@ -1,0 +1,13 @@
+---
+source: tests/instas.rs
+expression: "format!(\"{e:?}\")"
+---
+  x in comment on line 2
+  `-> YADR statement on line 3 not followed by :
+   ,----
+ 1 | YADR 2023-11-29 foo-bar also
+   : ^^|^^
+   :   `-- expected YADR:
+   `----
+  help: try `YADR: 2023-11-29 foo-bar also`
+

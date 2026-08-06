@@ -1,0 +1,13 @@
+---
+source: tests/instas.rs
+expression: "format!(\"{e:?}\")"
+---
+  x in comment on line 2
+  `-> YADR statement on line 3 does not have a title
+   ,----
+ 1 | YADR:   
+   : ^^^^|^^^
+   :     `-- expected a title after the :
+   `----
+  help: try `YADR: 2023-11-28 some-concise-title`
+

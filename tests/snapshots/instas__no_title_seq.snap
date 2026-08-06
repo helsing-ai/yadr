@@ -1,0 +1,12 @@
+---
+source: tests/instas.rs
+expression: "format! (\"{e:?}\")"
+---
+  x in comment on line 2
+  `-> YADR statement on line 3 has an invalid date: failed to parse four digit integer as year: invalid digit, expected 0-9 but got f
+   ,----
+ 1 | YADR: foo-bar also
+   :       ^^^|^^^
+   :          `-- expected a valid date
+   `----
+  help: Try `YADR: YYYY-MM-DD foo-bar also

@@ -1,0 +1,37 @@
+---
+source: tests/instas.rs
+expression: v
+---
+[
+    (
+        2,
+        YAdr {
+            date: 2023-11-30,
+            title: "2023-11-30 bar-baz",
+            in_context: "<use case/user story u>",
+            facing_concern: "<concern c>",
+            chosen_option: "<option o>",
+            neglected_options: "<other options>",
+            to_achieve: "<system qualities/desired consequences>",
+            accepted_downsides: "<downside d/undesired consequences>",
+            because: "<additional rationale>",
+            tail: Some(
+                "Here's a tail.",
+            ),
+            changes: [
+                (
+                    2023-12-01,
+                    "changed thing 1",
+                ),
+                (
+                    2023-12-02,
+                    "changed thing 2",
+                ),
+                (
+                    2023-12-03,
+                    "changed thing 3",
+                ),
+            ],
+        },
+    ),
+]

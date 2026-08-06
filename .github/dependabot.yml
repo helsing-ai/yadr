@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: quarterly
+    groups:
+      # avoid a separate PR per action each quarter
+      gha-bump:
+        applies-to: version-updates
+        update-types:
+          - "patch"
+          - "minor"
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: quarterly
+    groups:
+      minor:
+        applies-to: version-updates
+        update-types:
+          - "patch"
+          - "minor"

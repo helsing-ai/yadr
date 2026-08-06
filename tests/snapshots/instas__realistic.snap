@@ -1,0 +1,22 @@
+---
+source: tests/instas.rs
+expression: v
+---
+[
+    (
+        3,
+        YAdr {
+            date: 2024-06-18,
+            title: "2024-06-18 Array elements without a position defined",
+            in_context: "dealing with array elements which don't have a position defined",
+            facing_concern: "a decision of how to expose these elements through the public OrArray API",
+            chosen_option: "assigning these elements an arbitrary but deterministic position, as a function of their uid",
+            neglected_options: "to attempt to map them to the start or end of the array, or provide a separate API for access to position-less elements, when their uid is not yet known",
+            to_achieve: "minimal impact to the user-facing API, to avoid increasing the cognitive burden of using this crate, and to ensure that every node has a consistent view of the array when they share the same state",
+            accepted_downsides: "that users may be surprised to find that a non-move operation (like a delete) can result in an element being assigned a different position",
+            because: "this is a rare edge case, and placing the burden of handling it on users (by providing a separate access interface) would've been unreasonable. Additionally, non-deterministic views of the array would have violated a core assumption that nodes in sync with each other have the same view of the state",
+            tail: None,
+            changes: [],
+        },
+    ),
+]
