@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # tag=v7.0.0
       - name: Install stable
-        uses: dtolnay/rust-toolchain@fa04a1451ff1842e2626ccb99004d0195b455a88 # branch=master
+        uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
         with:
           toolchain: stable
           components: rustfmt
@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # tag=v7.0.0
       - name: Install ${{ matrix.toolchain }}
-        uses: dtolnay/rust-toolchain@fa04a1451ff1842e2626ccb99004d0195b455a88 # branch=master
+        uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
         with:
           toolchain: ${{ matrix.toolchain }}
           components: clippy
@@ -63,7 +63,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # tag=v7.0.0
       - name: Install stable
-        uses: dtolnay/rust-toolchain@fa04a1451ff1842e2626ccb99004d0195b455a88 # branch=master
+        uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
         with:
           toolchain: stable
           components: rustfmt
@@ -78,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # tag=v7.0.0
       - name: Install nightly
-        uses: dtolnay/rust-toolchain@fa04a1451ff1842e2626ccb99004d0195b455a88 # branch=master
+        uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
         with:
           toolchain: nightly
       - name: Install cargo-docs-rs
@@ -97,7 +97,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # tag=v7.0.0
       - name: Install ${{ matrix.msrv }}
-        uses: dtolnay/rust-toolchain@fa04a1451ff1842e2626ccb99004d0195b455a88 # branch=master
+        uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
         with:
           toolchain: ${{ matrix.msrv }}
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # tag=v6.1.0
@@ -114,7 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # tag=v7.0.0
       - name: Install stable
-        uses: dtolnay/rust-toolchain@fa04a1451ff1842e2626ccb99004d0195b455a88 # branch=master
+        uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
         with:
           toolchain: stable
       # `tests/fixtures/broken` holds a deliberately malformed statement, which is exactly the
