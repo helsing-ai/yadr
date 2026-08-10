@@ -2,6 +2,10 @@
 
 Command-line tool for accessing Y-Statement-style ADRs in code comments.
 
+See also [Helsing's announcement blog post][blog].
+
+[blog]: https://blog.helsing.ai/posts/on-comments/
+
 ## Description
 
 ADRs, or [Architecture Decision Records][ADRs] are justifications for
