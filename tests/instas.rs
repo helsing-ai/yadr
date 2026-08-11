@@ -313,6 +313,181 @@ We think this is the right trade-off because <why>.
 }
 
 #[test]
+fn stripes_ts() {
+    harness!(
+        TypeScript,
+        r#"
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn block_ts() {
+    harness!(
+        TypeScript,
+        r#"
+/*
+ * YADR: 2023-11-30 bar-baz
+ * In the context of <use case/user story u>, we faced <concern c>.
+ *
+ * We decided for <option o>, and neglected <other options>.
+ *
+ * We did this to achieve <system qualities/desired consequences>, accepting
+ * <downside d/undesired consequences>.
+ *
+ * We think this is the right trade-off because <additional rationale>.
+ */
+export function fetchAll() {}
+"#
+    );
+}
+
+/// The shape a TypeScript code base actually writes: a JSDoc block, opened with an extra `*` and
+/// attached to the declaration it documents. The extra opening `*` and the ` * ` on every
+/// continuation line both have to come off before the statement is parsed.
+#[test]
+fn jsdoc_ts() {
+    harness!(
+        TypeScript,
+        r#"
+/** YADR: 2023-11-30 bar-baz
+ * In the context of <use case/user story u>, we faced <concern c>.
+ *
+ * We decided for <option o>, and neglected <other options>.
+ *
+ * We did this to achieve <system qualities/desired consequences>, accepting
+ * <downside d/undesired consequences>.
+ *
+ * We think this is the right trade-off because <additional rationale>.
+ **/
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn two_in_one_ts() {
+    harness!(
+        TypeScript,
+        r#"
+// YADR: 2023-11-29 foo-bar also
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+//
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+/// TypeScript spells three different things with characters that also open a comment: a `//` can
+/// sit inside a string, a template literal, or a regex literal, and a regex literal can even open
+/// with `/*`. None of those are comments, so none of them may be scanned for a statement, and a
+/// real comment following them still has to be found.
+///
+/// This is the TypeScript counterpart of [`pytest_assertion_introspection`]: it guards the case
+/// where the grammar hands back something that merely *looks* like a comment.
+#[test]
+fn comment_lookalikes_ts() {
+    harness!(
+        TypeScript,
+        r#"
+const endpoint = "https://example.com/v1 // YADR: 2023-11-30 not-a-comment";
+const template = `https://example.com/v2 // YADR: 2023-11-30 also-not-a-comment`;
+const opener = "/* YADR: 2023-11-30 still-not-a-comment";
+const stripComments = /\/\/.*$/gm;
+
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+/// A run of `//` lines ends at the first line that isn't one, so a statement cannot be split
+/// across a blank line and still be read as one statement.
+///
+/// The statement below is cut in half by a blank line. Grouping the two runs into one block would
+/// make it parse; keeping them apart leaves the first block two paragraphs short, so the
+/// diagnostic is the evidence that the runs stayed separate.
+#[test]
+fn blank_line_splits_stripes_ts() {
+    harness!(
+        TypeScript,
+        r#"
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+/// Guards the "which paragraph is malformed" span for a language parsed through tree-sitter, where
+/// the ` * ` on each line is stripped before the statement is parsed and the offsets therefore
+/// don't line up with the source text.
+///
+/// The second paragraph opens with "We settled on" where the format calls for "We decided for", so
+/// the diagnostic should name paragraph 2.
+#[test]
+fn malformed_para_ts() {
+    harness!(
+        TypeScript,
+        r#"
+/**
+ * YADR: 2023-11-29 foo-bar also
+ * In the context of <use case/user story u>, we faced <concern c>.
+ *
+ * We settled on <option o>, and passed over <other options>.
+ *
+ * We did this to achieve <system qualities/desired consequences>, accepting
+ * <downside d/undesired consequences>.
+ *
+ * We think this is the right trade-off because <additional rationale>.
+ */
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
 fn early_termination_dashes() {
     harness!(
         Rust,
