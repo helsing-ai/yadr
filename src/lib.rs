@@ -519,9 +519,16 @@ fn find_yadr_sections_tree_sitter(
     let mut captures = cursor.captures(&query, root, input.as_bytes());
 
     let mut consecutive_comments = None;
+    // what ends a block is a gap in the lines the comments occupy, and nothing else. `last_line`
+    // therefore has to outlive a single match: a `(comment)+` pattern only groups comments that
+    // are *siblings*, and adjacent comments are not always siblings.
+    //
+    // JSX is where the two come apart. A comment inside markup has to be written as
+    // `{/* ... */}`, which wraps it in a `jsx_expression` of its own, so a run of them is a run of
+    // only-children rather than a run of siblings and tree-sitter reports one match each.
+    let mut last_line = 0;
     'all: while let Some((capture, _)) = captures.next() {
         let captured = capture.captures;
-        let mut last_line = 0;
         for QueryCapture { node, index } in captured {
             let mut text = node
                 .utf8_text(input.as_bytes())
@@ -638,10 +645,12 @@ fn find_yadr_sections_tree_sitter(
             }
         }
 
-        if !on_comment_end(&mut consecutive_comments, &mut on_yadr)? {
-            break 'all;
-        }
-
+        // deliberately no `on_comment_end` here. Ending the block at the end of every match would
+        // make matches, rather than lines, the thing that delimits a statement, and the two only
+        // agree while adjacent comments are siblings. The gap check at the top of the loop closes
+        // the block when the next comment is not on the following line, and the call after the
+        // loop closes whatever is still open at the end of the file, which between them is every
+        // case.
         capture.remove();
     }
     on_comment_end(&mut consecutive_comments, &mut on_yadr)?;

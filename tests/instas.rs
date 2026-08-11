@@ -487,6 +487,100 @@ export function fetchAll() {}
     );
 }
 
+/// A `{/* ... */}` expression container is the only way to write a comment inside JSX markup: A
+/// decision effected inside a render tree therefore has nowhere else to be recorded next to the
+/// code it documents, so a statement written in one has to be found.
+#[test]
+fn jsx_expression_comment() {
+    harness!(
+        JavaScriptXML,
+        r#"
+export function Banner({ message }) {
+  return (
+    <aside role="status">
+      {/*
+       * YADR: 2024-10-01 Announce via a live region
+       *
+       * In the context of <use case/user story u>, we faced <concern c>.
+       *
+       * We decided for <option o>, and neglected <other options>.
+       *
+       * We did this to achieve <system qualities/desired consequences>, accepting
+       * <downside d/undesired consequences>.
+       *
+       * We think this is the right trade-off because <additional rationale>.
+       */}
+      {message}
+    </aside>
+  );
+}
+"#
+    );
+}
+
+/// The same statement written as one container per line, which is how a short comment inside
+/// markup is normally formatted.
+///
+/// Each `{/* ... */}` wraps its comment in its own `jsx_expression`, so the comment nodes are
+/// only-children rather than siblings of one another. Grouping has to key off the lines the
+/// comments occupy, not off their position in the tree, or a statement spread over a run of
+/// containers is read as one truncated statement per line.
+#[test]
+fn jsx_expression_comment_run() {
+    harness!(
+        JavaScriptXML,
+        r#"
+export function Row({ cells }) {
+  return (
+    <tr>
+      {/* YADR: 2024-10-02 Key rows by id */}
+      {/* */}
+      {/* In the context of <use case/user story u>, we faced <concern c>. */}
+      {/* */}
+      {/* We decided for <option o>, and neglected <other options>. */}
+      {/* */}
+      {/* We did this to achieve <system qualities/desired consequences>, accepting */}
+      {/* <downside d/undesired consequences>. */}
+      {/* */}
+      {/* We think this is the right trade-off because <additional rationale>. */}
+      {cells}
+    </tr>
+  );
+}
+"#
+    );
+}
+
+/// The TSX grammar is reached through two extensions, and this is the one that needs it for both
+/// of its jobs at once: the body below carries JSX, which the plain TypeScript grammar rejects,
+/// alongside a type annotation, which a JavaScript grammar rejects.
+#[test]
+fn jsx_expression_comment_tsx() {
+    harness!(
+        TypeScriptXML,
+        r#"
+export function Panel({ title }: { title: string }) {
+  return (
+    <section aria-label={title}>
+      {/*
+       * YADR: 2024-10-03 Label the panel from its title
+       *
+       * In the context of <use case/user story u>, we faced <concern c>.
+       *
+       * We decided for <option o>, and neglected <other options>.
+       *
+       * We did this to achieve <system qualities/desired consequences>, accepting
+       * <downside d/undesired consequences>.
+       *
+       * We think this is the right trade-off because <additional rationale>.
+       */}
+    </section>
+  );
+}
+"#
+    );
+}
+
 #[test]
 fn early_termination_dashes() {
     harness!(
