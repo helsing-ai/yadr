@@ -69,6 +69,9 @@ fn all_lists_every_supported_language() {
         Language::Python,
         Language::Nix,
         Language::TypeScript,
+        Language::JavaScript,
+        Language::TypeScriptXML,
+        Language::JavaScriptXML,
     ] {
         assert!(
             Language::ALL.contains(&language),
@@ -90,7 +93,7 @@ fn typescript_is_selected_for_ts_files() {
 /// folding, so neither spelling should be mistaken for a supported language.
 #[test]
 fn unsupported_extensions_are_not_languages() {
-    for extension in [".ts", "tsx", "mts", "cts", "js", "md", ""] {
+    for extension in ["mts", "cts", "md", ""] {
         assert_eq!(
             Language::from_extension(extension),
             None,

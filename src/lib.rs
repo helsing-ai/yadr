@@ -172,6 +172,12 @@ pub enum Language {
     Nix,
     /// `.ts`
     TypeScript,
+    /// `.js`
+    JavaScript,
+    /// `.tsx`
+    TypeScriptXML,
+    /// `.jsx`
+    JavaScriptXML,
 }
 
 impl Language {
@@ -181,6 +187,9 @@ impl Language {
         Language::Python,
         Language::Nix,
         Language::TypeScript,
+        Language::JavaScript,
+        Language::TypeScriptXML,
+        Language::JavaScriptXML,
     ];
 
     /// Returns the language conventionally written in files with the given extension.
@@ -201,6 +210,9 @@ impl Language {
             "py" => Some(Language::Python),
             "nix" => Some(Language::Nix),
             "ts" => Some(Language::TypeScript),
+            "js" => Some(Language::JavaScript),
+            "tsx" => Some(Language::TypeScriptXML),
+            "jsx" => Some(Language::JavaScriptXML),
             _ => None,
         }
     }
@@ -215,6 +227,9 @@ impl Language {
             Language::Python => "py",
             Language::Nix => "nix",
             Language::TypeScript => "ts",
+            Language::JavaScript => "js",
+            Language::TypeScriptXML => "tsx",
+            Language::JavaScriptXML => "jsx",
         }
     }
 
@@ -225,6 +240,9 @@ impl Language {
             Language::Python => "python",
             Language::Nix => "nix",
             Language::TypeScript => "typescript",
+            Language::JavaScript => "javascript",
+            Language::TypeScriptXML => "typescriptxml",
+            Language::JavaScriptXML => "javascriptxml",
         }
     }
 }
@@ -467,6 +485,11 @@ fn find_yadr_sections_tree_sitter(
         Language::Python => tree_sitter_python::LANGUAGE.into(),
         Language::Nix => tree_sitter_nix::LANGUAGE.into(),
         Language::TypeScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+        // TypeScript being a superset of JavaScript means the typescript treesitter parser can be
+        // trivially re-used
+        Language::JavaScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+        Language::TypeScriptXML => tree_sitter_typescript::LANGUAGE_TSX.into(),
+        Language::JavaScriptXML => tree_sitter_typescript::LANGUAGE_TSX.into(),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     };
     let mut parser = Parser::new();
@@ -483,7 +506,11 @@ fn find_yadr_sections_tree_sitter(
             &ts_language,
             "([(comment)+ @comments (expression_statement (string) @docstr)])",
         ),
-        Language::Nix | Language::TypeScript => Query::new(&ts_language, "((comment)+ @comments)"),
+        Language::Nix
+        | Language::TypeScript
+        | Language::JavaScript
+        | Language::JavaScriptXML
+        | Language::TypeScriptXML => Query::new(&ts_language, "((comment)+ @comments)"),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     }
     .into_diagnostic()
