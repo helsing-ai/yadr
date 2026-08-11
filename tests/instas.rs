@@ -518,15 +518,20 @@ export function Banner({ message }) {
     );
 }
 
-/// The same statement written as one container per line, which is how a short comment inside
-/// markup is normally formatted.
+/// The same statement spread over one container per line, which is *not* supported: a Y-Statement
+/// written in markup has to sit in a single `{/* ... */}`.
 ///
-/// Each `{/* ... */}` wraps its comment in its own `jsx_expression`, so the comment nodes are
-/// only-children rather than siblings of one another. Grouping has to key off the lines the
-/// comments occupy, not off their position in the tree, or a statement spread over a run of
-/// containers is read as one truncated statement per line.
+/// Each container wraps its comment in a `jsx_expression` of its own, so the comment nodes are
+/// only-children rather than siblings of one another, and only siblings are grouped into a block.
+/// Every container therefore stands alone, and the first one, holding the title and nothing else,
+/// is what fails to parse.
+///
+/// The rejection is the point rather than a limitation worked around. Which lines a container
+/// lands on is the formatter's to decide, so line adjacency is a much weaker signal inside markup
+/// than it is between `//` lines, and a statement that silently changed meaning when the file was
+/// reformatted would be worse than one that has to be written in a single container.
 #[test]
-fn jsx_expression_comment_run() {
+fn jsx_expression_comment_run_is_rejected() {
     harness!(
         JavaScriptXML,
         r#"

@@ -131,17 +131,16 @@ fn show_prints_one_statement_in_full() {
     );
 }
 
-/// `banner.jsx` writes its statement inside JSX markup, as a run of one-line `{/* ... */}`
-/// containers rather than as one block comment. Each container is a `jsx_expression` of its own,
-/// so the comments are only-children rather than siblings and the walk has to group them by the
-/// lines they occupy.
+/// `banner.jsx` writes its statement inside JSX markup, in a single `{/* ... */}` container, which
+/// is the only comment syntax available in a children position and the only shape a statement in
+/// markup may take. Nothing else in the tree covers a statement that is not at the top level of a
+/// file.
 ///
-/// Asserting on the reflowed prose rather than on the title is what makes this a test of the
-/// grouping: a title is found from the first container alone, whereas a paragraph split across two
-/// containers only comes out whole if the run was joined. The last assertion covers the other
-/// half, that grouping stops where the lines stop being consecutive.
+/// Asserting on the reflowed prose rather than on the title is what makes this worth having: a
+/// title survives almost any mishandling of the container, whereas the paragraphs only come out
+/// whole if the `*` on each line came off and the `{` and `}` around the comment stayed out.
 #[test]
-fn show_joins_a_statement_split_across_jsx_containers() {
+fn show_reads_a_statement_inside_jsx_markup() {
     let stdout = stdout_of(
         yadr()
             .args(["show", "2024-09-05", CLEAN])
@@ -150,19 +149,19 @@ fn show_joins_a_statement_split_across_jsx_containers() {
     );
 
     assert!(
-        stdout.contains("tests/fixtures/clean/banner.jsx:16"),
+        stdout.contains("tests/fixtures/clean/banner.jsx:15"),
         "no source location in:\n{stdout}"
     );
-    // spread over two containers in the fixture, so this is one line only if they were joined
+    // wrapped over two lines in the fixture, so this is one line only if it was reflowed
     assert!(
         stdout.contains(
             "In the context of a status banner that has to be announced as soon as it appears, \
              we faced the question of where to mount it in the tree."
         ),
-        "paragraph split across containers was not joined in:\n{stdout}"
+        "paragraph was not reflowed in:\n{stdout}"
     );
-    // a lone JSX comment sits below the statement, separated from it by a line of markup, and so
-    // must not have been swept up as the statement's tail
+    // a second JSX comment sits below the statement and holds no statement of its own, so it
+    // should contribute nothing
     assert!(
         !stdout.contains("A lone JSX comment"),
         "an unrelated JSX comment joined the statement in:\n{stdout}"

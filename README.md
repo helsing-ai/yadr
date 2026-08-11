@@ -25,7 +25,7 @@ There exists a shorter version of an ADR, known as a
 
 and aim to very concisely capture just the essential bits of a taken
 decision. It's beneficial to maintain a changelog at the bottom of the
-Y-statement to keep a historical reference of the decision change and 
+Y-statement to keep a historical reference of the decision change and
 track major changes in the decision.
 
 These are short enough that they can be placed directly in comments in
@@ -94,6 +94,38 @@ For example, here is one taken from the [`dson`] crate:
  * of the state.
  */
 ```
+
+### Y-Statements in JSX and TSX
+
+In `.jsx` and `.tsx` files, a statement placed inside JSX markup has to be written in a **single** `{/* ... */}` container:
+
+```jsx
+<aside role="status">
+  {/*
+   * YADR: YYYY-MM-DD some title
+   *
+   * In the context of {use case/user story u}, we faced {concern c}.
+   *
+   * ...
+   */}
+</aside>
+```
+
+Spreading one statement over a run of shorter containers is unsupported:
+
+```jsx
+{
+  /* YADR: YYYY-MM-DD some title */
+}
+{
+  /* */
+}
+{
+  /* In the context of ... */
+}
+```
+
+Everywhere else, a run of adjacent comments is read as one block. Each `{/* ... */}` is a JSX expression of its own rather than a plain comment, and how such containers are laid out across lines is decided by whatever formats the file. Grouping them by line would let a reformat quietly change what a statement says, so a statement in markup is kept to one container instead.
 
 [ADRs]: https://adr.github.io/
 [MADR]: https://adr.github.io/madr/
@@ -213,19 +245,20 @@ when the decision documented in the YADR is applicable.
 This date should be updated whenever the YADR is significantly changed.
 
 Here are the recommended methods for documenting changes:
+
 1. **Minor Edits**: If you make small fixes to the text that don't alter the
-content or decision's validity, simply make the necessary corrections without
-updating the date or maintaining a changelog.
+   content or decision's validity, simply make the necessary corrections without
+   updating the date or maintaining a changelog.
 
 2. **Content Clarifications or Additions**: If you change or add reasoning,
-include missing information, or rewrite sections for clarity, add an entry to
-the changelog noting the modification.
+   include missing information, or rewrite sections for clarity, add an entry to
+   the changelog noting the modification.
 
 3. **Decision Changes**: If the change involves updating the decision itself,
-consider rewriting the YADR, including the title and the date, to clearly
-reflect the new decision. In this case, you must keep a single line in the
-changelog indicating that a significant decision change has occurred, including
-the old title (and date) of the previous YADR.
+   consider rewriting the YADR, including the title and the date, to clearly
+   reflect the new decision. In this case, you must keep a single line in the
+   changelog indicating that a significant decision change has occurred, including
+   the old title (and date) of the previous YADR.
 
 These practices ensure that YADRs provide a clear historical record of the
 decision-making process while maintaining their relevance and accuracy over
@@ -267,10 +300,10 @@ than no snapshot at all.
 
 Licensed under either of
 
-* Apache License, Version 2.0
-   ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
-* MIT license
-   ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
+- Apache License, Version 2.0
+  ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT license
+  ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
 
 at your option.
 
