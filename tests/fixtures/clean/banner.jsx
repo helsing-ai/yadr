@@ -13,20 +13,15 @@ export function Banner({ message }) {
   return (
     <aside role="status">
       {/*
-       * YADR: 2024-09-05 Render the banner as a sibling of the page content
+       * YADR: 1970-01-03 <title>
        *
-       * In the context of a status banner that has to be announced as soon as it appears, we
-       * faced the question of where to mount it in the tree.
+       * In the context of <in_context>, we faced <facing_concern>.
        *
-       * We decided for rendering it as a sibling of the page content, and neglected mounting
-       * it into a portal at the document root.
+       * We decided for <chosen_option>, and neglected <neglected_options>.
        *
-       * We did this to achieve an announcement that fires without the banner escaping the
-       * layout it belongs to, accepting that a page scrolling its own content has to leave
-       * room for it.
+       * We did this to achieve <to_achieve>, accepting <accepted_downsides>.
        *
-       * We think this is the right trade-off because the layout is shared by every page,
-       * whereas a portal would leave the banner's position depending on styles it cannot see.
+       * We think this is the right trade-off because <because>.
        */}
       {message}
       {/* A lone JSX comment, which holds no statement and so contributes none. */}
