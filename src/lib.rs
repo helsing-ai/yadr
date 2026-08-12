@@ -521,15 +521,6 @@ fn find_yadr_sections_tree_sitter(
     let mut consecutive_comments = None;
     'all: while let Some((capture, _)) = captures.next() {
         let captured = capture.captures;
-        // a block never spans two matches, so `last_line` is only ever compared against comments
-        // from the same one. A `(comment)+` pattern groups comments that are *siblings*, which
-        // for a run of `//` or `#` lines is the whole run.
-        //
-        // JSX is the exception, and the reason a Y-Statement written in markup has to sit in a
-        // single `{/* ... */}`. Each container wraps its comment in a `jsx_expression` of its own,
-        // making a run of them only-children rather than siblings, so tree-sitter reports one
-        // match each and they are never grouped. Therefore, spreading a statement over a run of
-        // containers is rejected rather than read.
         let mut last_line = 0;
         for QueryCapture { node, index } in captured {
             let mut text = node

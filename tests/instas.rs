@@ -352,9 +352,6 @@ export function fetchAll() {}
     );
 }
 
-/// The shape a TypeScript code base actually writes: a JSDoc block, opened with an extra `*` and
-/// attached to the declaration it documents. The extra opening `*` and the ` * ` on every
-/// continuation line both have to come off before the statement is parsed.
 #[test]
 fn jsdoc_ts() {
     harness!(
@@ -404,11 +401,6 @@ export function fetchAll() {}
     );
 }
 
-/// TypeScript spells three different things with characters that also open a comment: a `//` can
-/// sit inside a string, a template literal, or a regex literal, and a regex literal can even open
-/// with `/*`. None of those are comments, so none of them may be scanned for a statement, and a
-/// real comment following them still has to be found.
-///
 /// This is the TypeScript counterpart of [`pytest_assertion_introspection`]: it guards the case
 /// where the grammar hands back something that merely *looks* like a comment.
 #[test]
@@ -435,12 +427,6 @@ export function fetchAll() {}
     );
 }
 
-/// A run of `//` lines ends at the first line that isn't one, so a statement cannot be split
-/// across a blank line and still be read as one statement.
-///
-/// The statement below is cut in half by a blank line. Grouping the two runs into one block would
-/// make it parse; keeping them apart leaves the first block two paragraphs short, so the
-/// diagnostic is the evidence that the runs stayed separate.
 #[test]
 fn blank_line_splits_stripes_ts() {
     harness!(
@@ -460,10 +446,6 @@ export function fetchAll() {}
     );
 }
 
-/// Guards the "which paragraph is malformed" span for a language parsed through tree-sitter, where
-/// the ` * ` on each line is stripped before the statement is parsed and the offsets therefore
-/// don't line up with the source text.
-///
 /// The second paragraph opens with "We settled on" where the format calls for "We decided for", so
 /// the diagnostic should name paragraph 2.
 #[test]
@@ -487,9 +469,6 @@ export function fetchAll() {}
     );
 }
 
-/// A `{/* ... */}` expression container is the only way to write a comment inside JSX markup: A
-/// decision effected inside a render tree therefore has nowhere else to be recorded next to the
-/// code it documents, so a statement written in one has to be found.
 #[test]
 fn jsx_expression_comment() {
     harness!(
@@ -518,18 +497,7 @@ export function Banner({ message }) {
     );
 }
 
-/// The same statement spread over one container per line, which is *not* supported: a Y-Statement
-/// written in markup has to sit in a single `{/* ... */}`.
-///
-/// Each container wraps its comment in a `jsx_expression` of its own, so the comment nodes are
-/// only-children rather than siblings of one another, and only siblings are grouped into a block.
-/// Every container therefore stands alone, and the first one, holding the title and nothing else,
-/// is what fails to parse.
-///
-/// The rejection is the point rather than a limitation worked around. Which lines a container
-/// lands on is the formatter's to decide, so line adjacency is a much weaker signal inside markup
-/// than it is between `//` lines, and a statement that silently changed meaning when the file was
-/// reformatted would be worse than one that has to be written in a single container.
+/// The same statement spread over one container per line, which is *not* supported.
 #[test]
 fn jsx_expression_comment_run_is_rejected() {
     harness!(
@@ -556,9 +524,6 @@ export function Row({ cells }) {
     );
 }
 
-/// The TSX grammar is reached through two extensions, and this is the one that needs it for both
-/// of its jobs at once: the body below carries JSX, which the plain TypeScript grammar rejects,
-/// alongside a type annotation, which a JavaScript grammar rejects.
 #[test]
 fn jsx_expression_comment_tsx() {
     harness!(
