@@ -1,18 +1,17 @@
 ---
 source: tests/instas.rs
-expression: "format!(\"{e:?}\")"
+expression: "format! (\"{e:?}\")"
 ---
   x in comment on line 2
   |-> in Y-Statement starting on line 2
   `-> ADR change entries are not in chronological order
     ,-[13:1]
- 10 | Here's a tail.
+ 10 | <tail>
  11 | 
- 12 | 2023-12-02: changed thing 2
- 13 | 2023-12-03: changed thing 3
-    : ^^^^^^^^^^^^^|^^^^^^^^^^^^^
-    :              `-- this entry should come after the one below it
- 14 | 2023-12-01: changed thing 1
+ 12 | 2023-12-02: <chg2>
+ 13 | 2023-12-03: <chg3>
+    : ^^^^^^^^^|^^^^^^^^
+    :          `-- this entry should come after the one below it
+ 14 | 2023-12-01: <chg1>
     `----
   help: sort the change entries such that they are listed from oldest to newest
-

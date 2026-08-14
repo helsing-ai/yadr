@@ -1,37 +1,30 @@
 // A fixture for yadr's end-to-end tests. This file is never compiled; the test suite only ever
 // runs the `yadr` binary over it and asserts on what comes out. Two Y-Statements live here so that
-// the tests cover a file containing more than one.
+// the tests cover a file containing more than one, and they use different comment syntaxes so that
+// both of Rust's are covered.
 
 /*
- * YADR: 2024-01-15 Store timestamps as UTC
+ * YADR: 2024-01-15 <title>
  *
- * In the context of comparing event timestamps recorded on different machines, we faced
- * ambiguity about which offset a bare local timestamp had been written in.
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for storing every timestamp in UTC, and neglected recording the local offset
- * alongside each timestamp.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve unambiguous ordering of events no matter where they were recorded,
- * accepting that rendering a timestamp in the recorder's own time zone needs a separate
- * lookup.
+ * We did this to achieve <qua>, accepting <dwn>.
  *
- * We think this is the right trade-off because ordering matters everywhere in the system,
- * whereas local-time rendering matters only in the user interface.
+ * We think this is the right trade-off because <why>.
  *
- * 2024-02-01: noted that the user interface is where the offset lookup happens.
+ * 2024-02-01: <chg>
  */
 fn store() {}
 
-// YADR: 2024-01-22 Fail closed on an unreadable file
+// YADR: 2024-01-22 <title>
 //
-// In the context of walking a source tree we do not control, we faced the question of what
-// to do when a file cannot be read.
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for aborting the whole run, and neglected skipping the file with a warning.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve a guarantee that a successful run really did inspect everything,
-// accepting that one unreadable file stops the run.
+// We did this to achieve <qua>, accepting <dwn>.
 //
-// We think this is the right trade-off because a partial pass reported as a success is worse
-// than an obvious failure.
+// We think this is the right trade-off because <why>.
 fn read() {}

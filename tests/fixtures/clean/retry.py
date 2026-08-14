@@ -1,17 +1,17 @@
 # A fixture for yadr's end-to-end tests. Never executed; only ever read as text.
+#
+# The first paragraph is wrapped across two comment lines even though it would fit on one, so that
+# `show_prints_one_statement_in_full` in `tests/cli.rs` has a reflow to catch.
 
-# YADR: 2024-03-02 Retry with exponential backoff
+# YADR: 2024-03-02 <title>
 #
-# In the context of talking to an upstream service that occasionally rejects requests, we
-# faced the question of how quickly to retry.
+# In the context of <ctx>, we
+# faced <con>.
 #
-# We decided for doubling the delay after each attempt up to a ceiling, and neglected both
-# retrying immediately and giving up after the first failure.
+# We decided for <opt>, and neglected <alt>.
 #
-# We did this to achieve recovery from brief outages without adding load to a service that is
-# already struggling, accepting that a request can take much longer than usual to resolve.
+# We did this to achieve <qua>, accepting <dwn>.
 #
-# We think this is the right trade-off because the outages we see in practice are short, and
-# a caller that cannot wait can impose its own deadline.
+# We think this is the right trade-off because <why>.
 def fetch():
     pass

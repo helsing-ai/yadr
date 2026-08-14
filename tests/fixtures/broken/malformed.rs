@@ -5,10 +5,9 @@
 // decided for", so the diagnostic should name paragraph 2.
 
 /*
- * YADR: 2024-05-20 A statement that does not follow the format
+ * YADR: 2024-05-20 <title>
  *
- * In the context of testing what yadr reports for a malformed statement, we faced the need
- * for an input that is recognisably a Y-Statement but does not parse as one.
+ * In the context of <ctx>, we faced <con>.
  *
  * We chose one of the options available to us, and forgot to write the rest of the format.
  */
