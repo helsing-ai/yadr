@@ -1,16 +1,15 @@
 ---
 source: tests/instas.rs
-expression: "format!(\"{e:?}\")"
+expression: "format! (\"{e:?}\")"
 ---
   x in comment on line 2
   |-> in Y-Statement starting on line 3
   `-> Y-Statement is missing a paragraph.
    ,-[7:1]
  4 | 
- 5 | We did this to achieve <system qualities/desired consequences>, accepting
- 6 | <downside d/undesired consequences>.
+ 5 | We did this to achieve <qua>, accepting
+ 6 | <dwn>.
  7 |    
    : ^|^
    :  `-- expected "We think this is the right trade-off because <..>."
    `----
-

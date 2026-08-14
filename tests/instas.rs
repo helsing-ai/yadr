@@ -43,17 +43,17 @@ fn stars() {
         Rust,
         r#"
 /*
- * YADR: 2023-11-29 foo-bar also
- * In the context of <use case/user story u>, we faced <concern c>.
+ * YADR: 2023-11-29 <title>
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  *
- * Also, foobar to the baz.
+ * <tail>
  */
 "#
     );
@@ -64,15 +64,15 @@ fn stripes() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 "#
     );
 }
@@ -82,15 +82,15 @@ fn hashes_nix() {
     harness!(
         Nix,
         r#"
-# YADR: 2023-11-30 bar-baz
-# In the context of <use case/user story u>, we faced <concern c>.
+# YADR: 2023-11-30 <title>
+# In the context of <ctx>, we faced <con>.
 #
-# We decided for <option o>, and neglected <other options>.
+# We decided for <opt>, and neglected <alt>.
 #
-# We did this to achieve <system qualities/desired consequences>, accepting
-# <downside d/undesired consequences>.
+# We did this to achieve <qua>, accepting
+# <dwn>.
 #
-# We think this is the right trade-off because <additional rationale>.
+# We think this is the right trade-off because <why>.
 "#
     );
 }
@@ -100,15 +100,15 @@ fn block_nix() {
     harness!(
         Nix,
         r#"
-/* YADR: 2023-11-30 bar-baz
- * In the context of <use case/user story u>, we faced <concern c>.
+/* YADR: 2023-11-30 <title>
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  */
 "#
     );
@@ -119,15 +119,15 @@ fn double_block_nix() {
     harness!(
         Nix,
         r#"
-/** YADR: 2023-11-30 bar-baz
- * In the context of <use case/user story u>, we faced <concern c>.
+/** YADR: 2023-11-30 <title>
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  **/
 "#
     );
@@ -138,30 +138,30 @@ fn stripes_to_space() {
     harness!(
         Rust,
         r#"
-//! YADR: 2023-11-30 bar-baz
-//! In the context of <use case/user story u>, we faced <concern c>.
+//! YADR: 2023-11-30 <title>
+//! In the context of <ctx>, we faced <con>.
 //!
-//! We decided for <option o>, and neglected <other options>.
+//! We decided for <opt>, and neglected <alt>.
 //!
-//! We did this to achieve <system qualities/desired consequences>, accepting
-//! <downside d/undesired consequences>.
+//! We did this to achieve <qua>, accepting
+//! <dwn>.
 //!
-//! We think this is the right trade-off because <additional rationale>.
+//! We think this is the right trade-off because <why>.
 //!
-//! some more additional docs
-//! for this
-//! module
+//! <tail spanning
+//! several lines
+//! of module docs>
 //!
 //!
-//! YADR: 2023-12-01 foo-bar-baz
-//! In the context of <use case/user story u>, we faced <concern c>.
+//! YADR: 2023-12-01 <title>
+//! In the context of <ctx>, we faced <con>.
 //!
-//! We decided for <option o>, and neglected <other options>.
+//! We decided for <opt>, and neglected <alt>.
 //!
-//! We did this to achieve <system qualities/desired consequences>, accepting
-//! <downside d/undesired consequences>.
+//! We did this to achieve <qua>, accepting
+//! <dwn>.
 //!
-//! We think this is the right trade-off because <additional rationale>.
+//! We think this is the right trade-off because <why>.
 "#
     );
 }
@@ -171,15 +171,15 @@ fn hashes() {
     harness!(
         Python,
         r#"
-# YADR: 2023-11-30 bar-baz
-# In the context of <use case/user story u>, we faced <concern c>.
+# YADR: 2023-11-30 <title>
+# In the context of <ctx>, we faced <con>.
 #
-# We decided for <option o>, and neglected <other options>.
+# We decided for <opt>, and neglected <alt>.
 #
-# We did this to achieve <system qualities/desired consequences>, accepting
-# <downside d/undesired consequences>.
+# We did this to achieve <qua>, accepting
+# <dwn>.
 #
-# We think this is the right trade-off because <additional rationale>.
+# We think this is the right trade-off because <why>.
 "#
     );
 }
@@ -190,15 +190,15 @@ fn docstr_double() {
         Python,
         r#"
 """
-YADR: 2023-11-30 bar-baz
-In the context of <use case/user story u>, we faced <concern c>.
+YADR: 2023-11-30 <title>
+In the context of <ctx>, we faced <con>.
 
-We decided for <option o>, and neglected <other options>.
+We decided for <opt>, and neglected <alt>.
 
-We did this to achieve <system qualities/desired consequences>, accepting
-<downside d/undesired consequences>.
+We did this to achieve <qua>, accepting
+<dwn>.
 
-We think this is the right trade-off because <additional rationale>.
+We think this is the right trade-off because <why>.
 """
 "#
     );
@@ -210,15 +210,15 @@ fn docstr_single() {
         Python,
         r#"
 '''
-YADR: 2023-11-30 bar-baz
-In the context of <use case/user story u>, we faced <concern c>.
+YADR: 2023-11-30 <title>
+In the context of <ctx>, we faced <con>.
 
-We decided for <option o>, and neglected <other options>.
+We decided for <opt>, and neglected <alt>.
 
-We did this to achieve <system qualities/desired consequences>, accepting
-<downside d/undesired consequences>.
+We did this to achieve <qua>, accepting
+<dwn>.
 
-We think this is the right trade-off because <additional rationale>.
+We think this is the right trade-off because <why>.
 '''
 "#
     );
@@ -230,15 +230,15 @@ fn docstr_raw() {
         Python,
         r#"
 r'''
-YADR: 2023-11-30 bar-baz
-In the context of <use case/user story u>, we faced <concern c>.
+YADR: 2023-11-30 <title>
+In the context of <ctx>, we faced <con>.
 
-We decided for <option o>, and neglected <other options>.
+We decided for <opt>, and neglected <alt>.
 
-We did this to achieve <system qualities/desired consequences>, accepting
-<downside d/undesired consequences>.
+We did this to achieve <qua>, accepting
+<dwn>.
 
-We think this is the right trade-off because <additional rationale>.
+We think this is the right trade-off because <why>.
 '''
 "#
     );
@@ -250,15 +250,15 @@ fn docstr_unicode() {
         Python,
         r#"
 u'''
-YADR: 2023-11-30 bar-baz
-In the context of <use case/user story u>, we faced <concern c>.
+YADR: 2023-11-30 <title>
+In the context of <ctx>, we faced <con>.
 
-We decided for <option o>, and neglected <other options>.
+We decided for <opt>, and neglected <alt>.
 
-We did this to achieve <system qualities/desired consequences>, accepting
-<downside d/undesired consequences>.
+We did this to achieve <qua>, accepting
+<dwn>.
 
-We think this is the right trade-off because <additional rationale>.
+We think this is the right trade-off because <why>.
 '''
 "#
     );
@@ -298,15 +298,15 @@ fn docstr_raw_unicode() {
         Python,
         r#"
 ru'''
-YADR: 2023-11-30 bar-baz
-In the context of <use case/user story u>, we faced <concern c>.
+YADR: 2023-11-30 <title>
+In the context of <ctx>, we faced <con>.
 
-We decided for <option o>, and neglected <other options>.
+We decided for <opt>, and neglected <alt>.
 
-We did this to achieve <system qualities/desired consequences>, accepting
-<downside d/undesired consequences>.
+We did this to achieve <qua>, accepting
+<dwn>.
 
-We think this is the right trade-off because <additional rationale>.
+We think this is the right trade-off because <why>.
 '''
 "#
     );
@@ -317,21 +317,21 @@ fn early_termination_dashes() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
+// <tail>
 //
 // ---
 //
-// I don't want this included.
+// <excluded>
 "#
     );
 }
@@ -341,20 +341,20 @@ fn early_termination_triple_newline() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
+// <tail>
 //
 //
-// I don't want this included.
+// <excluded>
 "#
     );
 }
@@ -364,21 +364,21 @@ fn with_changes() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
+// <tail>
 //
-// 2023-12-01: changed thing 1
-// 2023-12-02: changed thing 2
-// 2023-12-03: changed thing 3
+// 2023-12-01: <chg1>
+// 2023-12-02: <chg2>
+// 2023-12-03: <chg3>
 "#
     );
 }
@@ -388,24 +388,24 @@ fn early_termination_with_changes() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
+// <tail>
 //
-// 2023-12-01: changed thing 1
-// 2023-12-02: changed thing 2
-// 2023-12-03: changed thing 3
+// 2023-12-01: <chg1>
+// 2023-12-02: <chg2>
+// 2023-12-03: <chg3>
 //
 //
-// I don't want this included.
+// <excluded>
 "#
     );
 }
@@ -463,28 +463,25 @@ fn indented_malformed_paragraph() {
         Rust,
         r#"
         /*
-         * YADR: 2024-02-10 bar-baz
+         * YADR: 2024-02-10 <title>
          *
-         * In the context of <use case/user story u> written out at enough length that it
-         * wraps onto a second and then a third line of the comment, we faced <concern c>
-         * that is described at similar length.
+         * In the context of <ctx padded out over enough words that it wraps onto a second
+         * and then a third line of the comment so that the paragraph offset has to account
+         * for the line breaks within it>, we faced <con described at a similar length>.
          *
-         * We decided for <option o>, spelled out over several lines so that the paragraph
-         * ahead of the malformed one is more than a single line tall, and neglected <other
-         * options>, which are listed here at a comparable length so that this paragraph
-         * ends up four lines tall in total.
+         * We decided for <opt spelled out over several lines so that the paragraph ahead of
+         * the malformed one is more than a single line tall>, and neglected <alt listed here
+         * at a comparable length so that this paragraph ends up four lines tall in total>.
          *
-         * We did this to produce <system qualities/desired consequences>, spread over
-         * enough lines that the reported span has to cover more than one of them, and
-         * padded out further so that the shape of this paragraph matches the one before
-         * it, accepting <downside d/undesired consequences>, which are written out at
-         * length for the same reason.
+         * We did this to produce <qua spread over enough lines that the reported span has to
+         * cover more than one of them and padded out further so that the shape of this
+         * paragraph matches the one before it>, accepting <dwn written out at length for the
+         * same reason>.
          *
-         * We think this is the right trade-off because <additional rationale>, stated over
-         * a few lines so that the diagnostic has something to show underneath the span it
-         * highlights.
+         * We think this is the right trade-off because <why stated over a few lines so that
+         * the diagnostic has something to show underneath the span it highlights>.
          *
-         * A trailing paragraph, so the malformed one is not the last thing in the comment.
+         * <trailing paragraph so the malformed one is not the last thing in the comment>
          */
 "#
     );
@@ -496,25 +493,25 @@ fn two_in_one_rs() {
         Rust,
         r#"
 /*
- * YADR: 2023-11-29 foo-bar also
- * In the context of <use case/user story u>, we faced <concern c>.
+ * YADR: 2023-11-29 <title>
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
 
- YADR: 2023-11-30 bar-baz
- In the context of <use case/user story u>, we faced <concern c>.
+ YADR: 2023-11-30 <title>
+ In the context of <ctx>, we faced <con>.
 
- We decided for <option o>, and neglected <other options>.
+ We decided for <opt>, and neglected <alt>.
 
- We did this to achieve <system qualities/desired consequences>, accepting
- <downside d/undesired consequences>.
+ We did this to achieve <qua>, accepting
+ <dwn>.
 
- We think this is the right trade-off because <additional rationale>.
+ We think this is the right trade-off because <why>.
  */
 "#
     );
@@ -525,25 +522,25 @@ fn two_in_one_py() {
     harness!(
         Python,
         r#"
-# YADR: 2023-11-29 foo-bar also
-# In the context of <use case/user story u>, we faced <concern c>.
+# YADR: 2023-11-29 <title>
+# In the context of <ctx>, we faced <con>.
 #
-# We decided for <option o>, and neglected <other options>.
+# We decided for <opt>, and neglected <alt>.
 #
-# We did this to achieve <system qualities/desired consequences>, accepting
-# <downside d/undesired consequences>.
+# We did this to achieve <qua>, accepting
+# <dwn>.
 #
-# We think this is the right trade-off because <additional rationale>.
+# We think this is the right trade-off because <why>.
 #
-# YADR: 2023-11-30 bar-baz
-# In the context of <use case/user story u>, we faced <concern c>.
+# YADR: 2023-11-30 <title>
+# In the context of <ctx>, we faced <con>.
 #
-# We decided for <option o>, and neglected <other options>.
+# We decided for <opt>, and neglected <alt>.
 #
-# We did this to achieve <system qualities/desired consequences>, accepting
-# <downside d/undesired consequences>.
+# We did this to achieve <qua>, accepting
+# <dwn>.
 #
-# We think this is the right trade-off because <additional rationale>.
+# We think this is the right trade-off because <why>.
 "#
     );
 }
@@ -554,13 +551,13 @@ fn missing_paragraph() {
         Rust,
         r#"
 /*
- * YADR: 2023-11-29 foo-bar also
- * In the context of <use case/user story u>, we faced <concern c>.
+ * YADR: 2023-11-29 <title>
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  */
 "#
     );
@@ -572,15 +569,15 @@ fn malformed_para() {
         Rust,
         r#"
 /*
- * YADR: 2023-11-29 foo-bar also
- * In the context of <use case/user story u>, we faced <concern c>.
+ * YADR: 2023-11-29 <title>
+ * In the context of <ctx>, we faced <con>.
  *
- * We failed to follow the format for <option o>, and neglected <other options>.
+ * We failed to follow the format for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  */
 "#
     );
@@ -593,14 +590,14 @@ fn title_no_colon() {
         r#"
 /*
  * YADR 2023-11-29 foo-bar also
- * In the context of <use case/user story u>, we faced <concern c>.
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  */
 "#
     );
@@ -613,14 +610,14 @@ fn no_title_seq() {
         r#"
 /*
  * YADR: foo-bar also
- * In the context of <use case/user story u>, we faced <concern c>.
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  */
 "#
     );
@@ -633,14 +630,14 @@ fn no_title() {
         r#"
 /*
  * YADR
- * In the context of <use case/user story u>, we faced <concern c>.
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  */
 "#
     );
@@ -653,14 +650,14 @@ fn empty_title() {
         r#"
 /*
  * YADR:   
- * In the context of <use case/user story u>, we faced <concern c>.
+ * In the context of <ctx>, we faced <con>.
  *
- * We decided for <option o>, and neglected <other options>.
+ * We decided for <opt>, and neglected <alt>.
  *
- * We did this to achieve <system qualities/desired consequences>, accepting
- * <downside d/undesired consequences>.
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
  *
- * We think this is the right trade-off because <additional rationale>.
+ * We think this is the right trade-off because <why>.
  */
 "#
     );
@@ -671,21 +668,21 @@ fn change_missing_colon() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
+// <tail>
 //
-// 2023-12-01: changed thing 1
-// 2023-12-02 changed thing 2
-// 2023-12-03: changed thing 3
+// 2023-12-01: <chg1>
+// 2023-12-02 <chg2>
+// 2023-12-03: <chg3>
 "#
     );
 }
@@ -695,21 +692,21 @@ fn changes_before_tail() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// 2023-12-01: changed thing 1
-// 2023-12-02: changed thing 2
-// 2023-12-03: changed thing 3
+// 2023-12-01: <chg1>
+// 2023-12-02: <chg2>
+// 2023-12-03: <chg3>
 //
-// Here's a tail.
+// <tail>
 "#
     );
 }
@@ -719,21 +716,21 @@ fn change_invalid_date() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
+// <tail>
 //
-// 2023-12-01: changed thing 1
-// 000: changed thing 2
-// 2023-12-03: changed thing 3
+// 2023-12-01: <chg1>
+// 000: <chg2>
+// 2023-12-03: <chg3>
 "#
     );
 }
@@ -743,20 +740,20 @@ fn no_empty_line_before_changes() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
-// 2023-12-01: changed thing 1
-// 2023-12-02: changed thing 2
-// 2023-12-03: changed thing 3
+// <tail>
+// 2023-12-01: <chg1>
+// 2023-12-02: <chg2>
+// 2023-12-03: <chg3>
 "#
     );
 }
@@ -766,21 +763,21 @@ fn bad_change_ordering() {
     harness!(
         Rust,
         r#"
-// YADR: 2023-11-30 bar-baz
-// In the context of <use case/user story u>, we faced <concern c>.
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
 //
-// We decided for <option o>, and neglected <other options>.
+// We decided for <opt>, and neglected <alt>.
 //
-// We did this to achieve <system qualities/desired consequences>, accepting
-// <downside d/undesired consequences>.
+// We did this to achieve <qua>, accepting
+// <dwn>.
 //
-// We think this is the right trade-off because <additional rationale>.
+// We think this is the right trade-off because <why>.
 //
-// Here's a tail.
+// <tail>
 //
-// 2023-12-02: changed thing 2
-// 2023-12-03: changed thing 3
-// 2023-12-01: changed thing 1
+// 2023-12-02: <chg2>
+// 2023-12-03: <chg3>
+// 2023-12-01: <chg1>
 "#
     );
 }

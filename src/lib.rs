@@ -1023,23 +1023,24 @@ impl<'a> YAdr<'a> {
     /// use yadr::YAdr;
     ///
     /// let yadr = YAdr::parse(
-    ///     "YADR: 2024-06-18 Store timestamps as UTC
+    ///     "YADR: 2024-06-18 <title>
     ///
-    ///      In the context of comparing timestamps across machines, we faced ambiguity about
-    ///      which offset each one was written in.
+    ///      In the context of <ctx>, we faced <con>.
     ///
-    ///      We decided for storing everything in UTC, and neglected recording a local offset
-    ///      alongside each timestamp.
+    ///      We decided for <opt>, and neglected <alt written out at enough
+    ///      length that it wraps onto a second line>.
     ///
-    ///      We did this to achieve unambiguous ordering, accepting an extra lookup when
-    ///      rendering a timestamp in local time.
+    ///      We did this to achieve <qua>, accepting <dwn>.
     ///
-    ///      We think this is the right trade-off because ordering matters everywhere and
-    ///      local-time rendering only in the user interface.",
+    ///      We think this is the right trade-off because <why>.",
     /// )?;
     ///
-    /// assert_eq!(yadr.title, "2024-06-18 Store timestamps as UTC");
-    /// assert_eq!(yadr.neglected_options, "recording a local offset\n     alongside each timestamp");
+    /// assert_eq!(yadr.title, "2024-06-18 <title>");
+    /// assert_eq!(yadr.in_context, "<ctx>");
+    /// assert_eq!(
+    ///     yadr.neglected_options,
+    ///     "<alt written out at enough\n     length that it wraps onto a second line>",
+    /// );
     /// # Ok::<_, miette::Report>(())
     /// ```
     ///
@@ -1210,19 +1211,19 @@ mod tests {
     #[test]
     fn parse_borrows_from_its_input() {
         let statement = String::from(
-            "YADR: 2024-06-18 a-title
+            "YADR: 2024-06-18 <title>
 
-            In the context of <u>, we faced <c>.
+            In the context of <ctx>, we faced <con>.
 
-            We decided for <o>, and neglected <others>.
+            We decided for <opt>, and neglected <alt>.
 
-            We did this to achieve <q>, accepting <d>.
+            We did this to achieve <qua>, accepting <dwn>.
 
-            We think this is the right trade-off because <r>.",
+            We think this is the right trade-off because <why>.",
         );
         let yadr = YAdr::parse(&statement).expect("statement is well-formed");
-        assert!(matches!(yadr.in_context, Cow::Borrowed("<u>")));
-        assert_eq!(yadr.title, "2024-06-18 a-title");
+        assert!(matches!(yadr.in_context, Cow::Borrowed("<ctx>")));
+        assert_eq!(yadr.title, "2024-06-18 <title>");
         assert_eq!(yadr.date, Date::constant(2024, 6, 18));
 
         // ...whereas `FromStr` has to own, since it cannot name the input's lifetime.
@@ -1232,15 +1233,15 @@ mod tests {
 
     #[test]
     fn parse_rejects_a_second_statement() {
-        let one = "YADR: 2024-06-18 a-title
+        let one = "YADR: 2024-06-18 <title>
 
-            In the context of <u>, we faced <c>.
+            In the context of <ctx>, we faced <con>.
 
-            We decided for <o>, and neglected <others>.
+            We decided for <opt>, and neglected <alt>.
 
-            We did this to achieve <q>, accepting <d>.
+            We did this to achieve <qua>, accepting <dwn>.
 
-            We think this is the right trade-off because <r>.";
+            We think this is the right trade-off because <why>.";
         let two = format!("{one}\n\n{}", one.replace("2024-06-18", "2024-06-19"));
         let e = YAdr::parse(&two).expect_err("two statements is not one statement");
         assert!(
@@ -1449,31 +1450,28 @@ mod tests {
 
     #[test]
     fn full_yadr() {
-        let source = "YADR: 2023-11-28 some-title
+        let source = "YADR: 2023-11-28 <title>
 
-        In the context of <use case/user story u>, we faced <concern c>.
+        In the context of <ctx>, we faced <con>.
 
-        We decided for <option o>, and neglected <other options>.
+        We decided for <opt>, and neglected <alt>.
 
-        We did this to achieve <system qualities/desired consequences>, accepting
-        <downside d/undesired consequences>.
+        We did this to achieve <qua>, accepting
+        <dwn>.
 
-        We think this is the right trade-off because <additional rationale>.
+        We think this is the right trade-off because <why>.
         ";
         let mut yadr = YAdr::parse(source).unwrap();
         yadr.tidy();
         assert_eq!(yadr.date, Date::constant(2023, 11, 28));
-        assert_eq!(yadr.title, "2023-11-28 some-title");
-        assert_eq!(yadr.in_context, "<use case/user story u>");
-        assert_eq!(yadr.facing_concern, "<concern c>");
-        assert_eq!(yadr.chosen_option, "<option o>");
-        assert_eq!(yadr.neglected_options, "<other options>");
-        assert_eq!(yadr.to_achieve, "<system qualities/desired consequences>");
-        assert_eq!(
-            yadr.accepted_downsides,
-            "<downside d/undesired consequences>"
-        );
-        assert_eq!(yadr.because, "<additional rationale>");
+        assert_eq!(yadr.title, "2023-11-28 <title>");
+        assert_eq!(yadr.in_context, "<ctx>");
+        assert_eq!(yadr.facing_concern, "<con>");
+        assert_eq!(yadr.chosen_option, "<opt>");
+        assert_eq!(yadr.neglected_options, "<alt>");
+        assert_eq!(yadr.to_achieve, "<qua>");
+        assert_eq!(yadr.accepted_downsides, "<dwn>");
+        assert_eq!(yadr.because, "<why>");
         assert_eq!(yadr.tail, None);
 
         // `Display` is meant to emit the canonical format, which means what it prints has to be
@@ -1490,15 +1488,15 @@ mod tests {
         find_all(
             r#"
                 /*
-                 * YADR: 2023-11-28 foo-bar also
-                 * In the context of <use case/user story u>, we faced <concern c>.
+                 * YADR: 2023-11-28 <title>
+                 * In the context of <ctx>, we faced <con>.
                  *
-                 * We decided for <option o>, and neglected <other options>.
+                 * We decided for <opt>, and neglected <alt>.
                  *
-                 * We did this to achieve <system qualities/desired consequences>, accepting
-                 * <downside d/undesired consequences>.
+                 * We did this to achieve <qua>, accepting
+                 * <dwn>.
                  *
-                 * We think this is the right trade-off because <additional rationale>.
+                 * We think this is the right trade-off because <why>.
                  */
             "#,
             Language::Rust,
@@ -1511,20 +1509,14 @@ mod tests {
         assert_eq!(yadrs.len(), 1);
         assert_eq!(yadrs[0].0, 3);
         assert_eq!(yadrs[0].1.date, Date::constant(2023, 11, 28));
-        assert_eq!(yadrs[0].1.title, "2023-11-28 foo-bar also");
-        assert_eq!(yadrs[0].1.in_context, "<use case/user story u>");
-        assert_eq!(yadrs[0].1.facing_concern, "<concern c>");
-        assert_eq!(yadrs[0].1.chosen_option, "<option o>");
-        assert_eq!(yadrs[0].1.neglected_options, "<other options>");
-        assert_eq!(
-            yadrs[0].1.to_achieve,
-            "<system qualities/desired consequences>"
-        );
-        assert_eq!(
-            yadrs[0].1.accepted_downsides,
-            "<downside d/undesired consequences>"
-        );
-        assert_eq!(yadrs[0].1.because, "<additional rationale>");
+        assert_eq!(yadrs[0].1.title, "2023-11-28 <title>");
+        assert_eq!(yadrs[0].1.in_context, "<ctx>");
+        assert_eq!(yadrs[0].1.facing_concern, "<con>");
+        assert_eq!(yadrs[0].1.chosen_option, "<opt>");
+        assert_eq!(yadrs[0].1.neglected_options, "<alt>");
+        assert_eq!(yadrs[0].1.to_achieve, "<qua>");
+        assert_eq!(yadrs[0].1.accepted_downsides, "<dwn>");
+        assert_eq!(yadrs[0].1.because, "<why>");
         assert_eq!(yadrs[0].1.tail, None);
     }
 
@@ -1534,17 +1526,17 @@ mod tests {
         find_all(
             r#"
                 /*
-                 * YADR: 2023-11-28 foo-bar also
-                 * In the context of <use case/user story u>, we faced <concern c>.
+                 * YADR: 2023-11-28 <title>
+                 * In the context of <ctx>, we faced <con>.
                  *
-                 * We decided for <option o>, and neglected <other options>.
+                 * We decided for <opt>, and neglected <alt>.
                  *
-                 * We did this to achieve <system qualities/desired consequences>, accepting
-                 * <downside d/undesired consequences>.
+                 * We did this to achieve <qua>, accepting
+                 * <dwn>.
                  *
-                 * We think this is the right trade-off because <additional rationale>.
+                 * We think this is the right trade-off because <why>.
                  *
-                 * Also, foobar to the baz.
+                 * <tail>
                  */
             "#,
             Language::Rust,
@@ -1557,24 +1549,15 @@ mod tests {
         assert_eq!(yadrs.len(), 1);
         assert_eq!(yadrs[0].0, 3);
         assert_eq!(yadrs[0].1.date, Date::constant(2023, 11, 28));
-        assert_eq!(yadrs[0].1.title, "2023-11-28 foo-bar also");
-        assert_eq!(yadrs[0].1.in_context, "<use case/user story u>");
-        assert_eq!(yadrs[0].1.facing_concern, "<concern c>");
-        assert_eq!(yadrs[0].1.chosen_option, "<option o>");
-        assert_eq!(yadrs[0].1.neglected_options, "<other options>");
-        assert_eq!(
-            yadrs[0].1.to_achieve,
-            "<system qualities/desired consequences>"
-        );
-        assert_eq!(
-            yadrs[0].1.accepted_downsides,
-            "<downside d/undesired consequences>"
-        );
-        assert_eq!(yadrs[0].1.because, "<additional rationale>");
-        assert_eq!(
-            yadrs[0].1.tail.as_ref().unwrap(),
-            "Also, foobar to the baz."
-        );
+        assert_eq!(yadrs[0].1.title, "2023-11-28 <title>");
+        assert_eq!(yadrs[0].1.in_context, "<ctx>");
+        assert_eq!(yadrs[0].1.facing_concern, "<con>");
+        assert_eq!(yadrs[0].1.chosen_option, "<opt>");
+        assert_eq!(yadrs[0].1.neglected_options, "<alt>");
+        assert_eq!(yadrs[0].1.to_achieve, "<qua>");
+        assert_eq!(yadrs[0].1.accepted_downsides, "<dwn>");
+        assert_eq!(yadrs[0].1.because, "<why>");
+        assert_eq!(yadrs[0].1.tail.as_ref().unwrap(), "<tail>");
     }
 
     #[test]
@@ -1583,18 +1566,18 @@ mod tests {
         find_all(
             r#"
                 /*
-                 * YADR: 2023-11-28 foo-bar also
-                 * In the context of <use case/user story u>, we faced <concern c>.
+                 * YADR: 2023-11-28 <title>
+                 * In the context of <ctx>, we faced <con>.
                  *
-                 * We decided for <option o>, and neglected <other options>.
+                 * We decided for <opt>, and neglected <alt>.
                  *
-                 * We did this to achieve <system qualities/desired consequences>, accepting
-                 * <downside d/undesired consequences>.
+                 * We did this to achieve <qua>, accepting
+                 * <dwn>.
                  *
-                 * We think this is the right trade-off because <additional rationale>.
+                 * We think this is the right trade-off because <why>.
                  *
-                 * 2023-11-29: jon did a thing
-                 * 2023-11-30: james did another thing
+                 * 2023-11-29: <chg1>
+                 * 2023-11-30: <chg2>
                  */
             "#,
             Language::Rust,
@@ -1608,9 +1591,9 @@ mod tests {
         assert_eq!(yadrs[0].1.tail, None);
         assert_eq!(yadrs[0].1.changes.len(), 2);
         assert_eq!(yadrs[0].1.changes[0].0, Date::constant(2023, 11, 29));
-        assert_eq!(yadrs[0].1.changes[0].1, "jon did a thing");
+        assert_eq!(yadrs[0].1.changes[0].1, "<chg1>");
         assert_eq!(yadrs[0].1.changes[1].0, Date::constant(2023, 11, 30));
-        assert_eq!(yadrs[0].1.changes[1].1, "james did another thing");
+        assert_eq!(yadrs[0].1.changes[1].1, "<chg2>");
     }
 
     #[test]
@@ -1619,20 +1602,20 @@ mod tests {
         find_all(
             r#"
                 /*
-                 * YADR: 2023-11-28 foo-bar also
-                 * In the context of <use case/user story u>, we faced <concern c>.
+                 * YADR: 2023-11-28 <title>
+                 * In the context of <ctx>, we faced <con>.
                  *
-                 * We decided for <option o>, and neglected <other options>.
+                 * We decided for <opt>, and neglected <alt>.
                  *
-                 * We did this to achieve <system qualities/desired consequences>, accepting
-                 * <downside d/undesired consequences>.
+                 * We did this to achieve <qua>, accepting
+                 * <dwn>.
                  *
-                 * We think this is the right trade-off because <additional rationale>.
+                 * We think this is the right trade-off because <why>.
                  *
-                 * And also there's a tail, followed by changes:
+                 * <tail>
                  *
-                 * 2023-11-29: jon did a thing
-                 * 2023-11-30: james did another thing
+                 * 2023-11-29: <chg1>
+                 * 2023-11-30: <chg2>
                  */
             "#,
             Language::Rust,
@@ -1643,15 +1626,12 @@ mod tests {
         )
         .unwrap();
         assert_eq!(yadrs.len(), 1);
-        assert_eq!(
-            yadrs[0].1.tail.as_ref().unwrap(),
-            "And also there's a tail, followed by changes:"
-        );
+        assert_eq!(yadrs[0].1.tail.as_ref().unwrap(), "<tail>");
         assert_eq!(yadrs[0].1.changes.len(), 2);
         assert_eq!(yadrs[0].1.changes[0].0, Date::constant(2023, 11, 29));
-        assert_eq!(yadrs[0].1.changes[0].1, "jon did a thing");
+        assert_eq!(yadrs[0].1.changes[0].1, "<chg1>");
         assert_eq!(yadrs[0].1.changes[1].0, Date::constant(2023, 11, 30));
-        assert_eq!(yadrs[0].1.changes[1].1, "james did another thing");
+        assert_eq!(yadrs[0].1.changes[1].1, "<chg2>");
     }
 
     #[test]
@@ -1660,26 +1640,26 @@ mod tests {
         find_all(
             r#"
                 /*
-                 * YADR: 2023-11-28 foo-bar also
-                 * In the context of <use case/user story u>, we faced <concern c>.
+                 * YADR: 2023-11-28 <title>
+                 * In the context of <ctx>, we faced <con>.
                  *
-                 * We decided for <option o>, and neglected <other options>.
+                 * We decided for <opt>, and neglected <alt>.
                  *
-                 * We did this to achieve <system qualities/desired consequences>, accepting
-                 * <downside d/undesired consequences>.
+                 * We did this to achieve <qua>, accepting
+                 * <dwn>.
                  *
-                 * We think this is the right trade-off because <additional rationale>.
+                 * We think this is the right trade-off because <why>.
                  */
 
-                // YADR: 2023-11-29 bar-baz
-                // In the context of <use case/user story u>, we faced <concern c>.
+                // YADR: 2023-11-29 <title>
+                // In the context of <ctx>, we faced <con>.
                 //
-                // We decided for <option o>, and neglected <other options>.
+                // We decided for <opt>, and neglected <alt>.
                 //
-                // We did this to achieve <system qualities/desired consequences>, accepting
-                // <downside d/undesired consequences>.
+                // We did this to achieve <qua>, accepting
+                // <dwn>.
                 //
-                // We think this is the right trade-off because <additional rationale>.
+                // We think this is the right trade-off because <why>.
             "#,
             Language::Rust,
             |line, yadr| {
@@ -1692,20 +1672,17 @@ mod tests {
         assert_eq!(yadrs[0].0, 3);
         assert_eq!(yadrs[1].0, 14);
         assert_eq!(yadrs[0].1.date, Date::constant(2023, 11, 28));
-        assert_eq!(yadrs[0].1.title, "2023-11-28 foo-bar also");
+        assert_eq!(yadrs[0].1.title, "2023-11-28 <title>");
         assert_eq!(yadrs[1].1.date, Date::constant(2023, 11, 29));
-        assert_eq!(yadrs[1].1.title, "2023-11-29 bar-baz");
+        assert_eq!(yadrs[1].1.title, "2023-11-29 <title>");
         for (_, yadr) in &yadrs {
-            assert_eq!(yadr.in_context, "<use case/user story u>");
-            assert_eq!(yadr.facing_concern, "<concern c>");
-            assert_eq!(yadr.chosen_option, "<option o>");
-            assert_eq!(yadr.neglected_options, "<other options>");
-            assert_eq!(yadr.to_achieve, "<system qualities/desired consequences>");
-            assert_eq!(
-                yadr.accepted_downsides,
-                "<downside d/undesired consequences>"
-            );
-            assert_eq!(yadr.because, "<additional rationale>");
+            assert_eq!(yadr.in_context, "<ctx>");
+            assert_eq!(yadr.facing_concern, "<con>");
+            assert_eq!(yadr.chosen_option, "<opt>");
+            assert_eq!(yadr.neglected_options, "<alt>");
+            assert_eq!(yadr.to_achieve, "<qua>");
+            assert_eq!(yadr.accepted_downsides, "<dwn>");
+            assert_eq!(yadr.because, "<why>");
             assert_eq!(yadr.tail, None);
         }
     }
@@ -1716,25 +1693,25 @@ mod tests {
         find_all(
             r#"
                 /*
-                 * YADR: 2023-11-28 foo-bar also
-                 * In the context of <use case/user story u>, we faced <concern c>.
+                 * YADR: 2023-11-28 <title>
+                 * In the context of <ctx>, we faced <con>.
                  *
-                 * We decided for <option o>, and neglected <other options>.
+                 * We decided for <opt>, and neglected <alt>.
                  *
-                 * We did this to achieve <system qualities/desired consequences>, accepting
-                 * <downside d/undesired consequences>.
+                 * We did this to achieve <qua>, accepting
+                 * <dwn>.
                  *
-                 * We think this is the right trade-off because <additional rationale>.
+                 * We think this is the right trade-off because <why>.
 
-                 YADR: 2023-11-29 bar-baz
-                 In the context of <use case/user story u>, we faced <concern c>.
+                 YADR: 2023-11-29 <title>
+                 In the context of <ctx>, we faced <con>.
 
-                 We decided for <option o>, and neglected <other options>.
+                 We decided for <opt>, and neglected <alt>.
 
-                 We did this to achieve <system qualities/desired consequences>, accepting
-                 <downside d/undesired consequences>.
+                 We did this to achieve <qua>, accepting
+                 <dwn>.
 
-                 We think this is the right trade-off because <additional rationale>.
+                 We think this is the right trade-off because <why>.
                  */
             "#,
             Language::Rust,
@@ -1748,20 +1725,17 @@ mod tests {
         assert_eq!(yadrs[0].0, 3);
         assert_eq!(yadrs[1].0, 13);
         assert_eq!(yadrs[0].1.date, Date::constant(2023, 11, 28));
-        assert_eq!(yadrs[0].1.title, "2023-11-28 foo-bar also");
+        assert_eq!(yadrs[0].1.title, "2023-11-28 <title>");
         assert_eq!(yadrs[1].1.date, Date::constant(2023, 11, 29));
-        assert_eq!(yadrs[1].1.title, "2023-11-29 bar-baz");
+        assert_eq!(yadrs[1].1.title, "2023-11-29 <title>");
         for (_, yadr) in &yadrs {
-            assert_eq!(yadr.in_context, "<use case/user story u>");
-            assert_eq!(yadr.facing_concern, "<concern c>");
-            assert_eq!(yadr.chosen_option, "<option o>");
-            assert_eq!(yadr.neglected_options, "<other options>");
-            assert_eq!(yadr.to_achieve, "<system qualities/desired consequences>");
-            assert_eq!(
-                yadr.accepted_downsides,
-                "<downside d/undesired consequences>"
-            );
-            assert_eq!(yadr.because, "<additional rationale>");
+            assert_eq!(yadr.in_context, "<ctx>");
+            assert_eq!(yadr.facing_concern, "<con>");
+            assert_eq!(yadr.chosen_option, "<opt>");
+            assert_eq!(yadr.neglected_options, "<alt>");
+            assert_eq!(yadr.to_achieve, "<qua>");
+            assert_eq!(yadr.accepted_downsides, "<dwn>");
+            assert_eq!(yadr.because, "<why>");
             assert_eq!(yadr.tail, None);
         }
     }

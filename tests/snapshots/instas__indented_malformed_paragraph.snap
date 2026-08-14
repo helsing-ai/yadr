@@ -6,18 +6,17 @@ expression: "format! (\"{e:?}\")"
   |-> in Y-Statement starting on line 3
   |-> in paragraph 3 of that statement
   `-> Y-Statement did not match expected format
-    ,-[11:1]
-  8 |     options>, which are listed here at a comparable length so that this paragraph
-  9 |     ends up four lines tall in total.
- 10 |     
- 11 | ,-> We did this to produce <system qualities/desired consequences>, spread over
- 12 | |   enough lines that the reported span has to cover more than one of them, and
- 13 | |   padded out further so that the shape of this paragraph matches the one before
- 14 | |   it, accepting <downside d/undesired consequences>, which are written out at
- 15 | |-> length for the same reason.
+    ,-[10:1]
+  7 |     the malformed one is more than a single line tall>, and neglected <alt listed here
+  8 |     at a comparable length so that this paragraph ends up four lines tall in total>.
+  9 |     
+ 10 | ,-> We did this to produce <qua spread over enough lines that the reported span has to
+ 11 | |   cover more than one of them and padded out further so that the shape of this
+ 12 | |   paragraph matches the one before it>, accepting <dwn written out at length for the
+ 13 | |-> same reason>.
     : `---- expected "We did this to achieve <..>, accepting <..>."
- 16 |     
- 17 |     We think this is the right trade-off because <additional rationale>, stated over
- 18 |     a few lines so that the diagnostic has something to show underneath the span it
+ 14 |     
+ 15 |     We think this is the right trade-off because <why stated over a few lines so that
+ 16 |     the diagnostic has something to show underneath the span it highlights>.
     `----
   help: Note that punctuation is significant; you have to match every , and .

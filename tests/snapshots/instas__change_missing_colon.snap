@@ -1,16 +1,15 @@
 ---
 source: tests/instas.rs
-expression: "format!(\"{e:?}\")"
+expression: "format! (\"{e:?}\")"
 ---
   x in comment on line 2
   |-> in Y-Statement starting on line 2
   `-> missing empty line before list of change list
     ,-[14:1]
  11 | 
- 12 | 2023-12-01: changed thing 1
- 13 | 2023-12-02 changed thing 2
- 14 | 2023-12-03: changed thing 3
-    : ^^^^^^^^^^^^^|^^^^^^^^^^^^^
-    :              `-- before this list of changes
+ 12 | 2023-12-01: <chg1>
+ 13 | 2023-12-02 <chg2>
+ 14 | 2023-12-03: <chg3>
+    : ^^^^^^^^^|^^^^^^^^
+    :          `-- before this list of changes
     `----
-

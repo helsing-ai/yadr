@@ -1,17 +1,16 @@
 ---
 source: tests/instas.rs
-expression: "format!(\"{e:?}\")"
+expression: "format! (\"{e:?}\")"
 ---
   x in comment on line 2
   |-> in Y-Statement starting on line 2
   `-> missing empty line before list of change list
     ,-[11:1]
-  8 |     We think this is the right trade-off because <additional rationale>.
+  8 |     We think this is the right trade-off because <why>.
   9 |     
- 10 |     Here's a tail.
- 11 | ,-> 2023-12-01: changed thing 1
- 12 | |   2023-12-02: changed thing 2
- 13 | |-> 2023-12-03: changed thing 3
+ 10 |     <tail>
+ 11 | ,-> 2023-12-01: <chg1>
+ 12 | |   2023-12-02: <chg2>
+ 13 | |-> 2023-12-03: <chg3>
     : `---- before this list of changes
     `----
-

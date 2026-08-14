@@ -5,16 +5,19 @@
 //! exist in `main.rs`: argument parsing, the directory walk, the exclude rules, the shape of each
 //! subcommand's output, and the exit status.
 //!
-//! The fixtures are deliberately kept small and boring. They exist to be parsed, not read.
+//! The fixtures are deliberately kept small and boring. They exist to be parsed, not read, so a
+//! statement is identified here by its date rather than by its title.
 
 use assert_cmd::Command;
 use predicates::prelude::*;
 
 /// A tree of three files, one per supported language, holding four valid Y-Statements between
-/// them. `storage.rs` holds two so that per-file grouping in `list` output gets exercised.
+/// them, dated 2024-01-15, 2024-01-22, 2024-03-02, and 2024-04-09. `storage.rs` holds the first
+/// two so that per-file grouping in `list` output gets exercised.
 const CLEAN: &str = "tests/fixtures/clean";
 
-/// A tree holding a single Y-Statement whose second paragraph doesn't follow the format.
+/// A tree holding a single Y-Statement, dated 2024-05-20, whose second paragraph doesn't follow
+/// the format.
 const BROKEN: &str = "tests/fixtures/broken";
 
 fn yadr() -> Command {
@@ -37,18 +40,10 @@ fn list_finds_statements_in_every_supported_language() {
         .args(["ls", CLEAN])
         .assert()
         .success()
-        .stdout(predicate::str::contains(
-            "2024-01-15 Store timestamps as UTC",
-        ))
-        .stdout(predicate::str::contains(
-            "2024-01-22 Fail closed on an unreadable file",
-        ))
-        .stdout(predicate::str::contains(
-            "2024-03-02 Retry with exponential backoff",
-        ))
-        .stdout(predicate::str::contains(
-            "2024-04-09 Pin the toolchain in the lock file",
-        ));
+        .stdout(predicate::str::contains("2024-01-15 <title>"))
+        .stdout(predicate::str::contains("2024-01-22 <title>"))
+        .stdout(predicate::str::contains("2024-03-02 <title>"))
+        .stdout(predicate::str::contains("2024-04-09 <title>"));
 }
 
 /// The two statements in `storage.rs` should appear under a single `==>` heading for that file,
@@ -75,7 +70,7 @@ fn list_reports_the_most_recent_change() {
         .assert()
         .success()
         .stdout(predicate::str::contains(
-            "2024-01-15 Store timestamps as UTC (last changed: 2024-02-01)",
+            "2024-01-15 <title> (last changed: 2024-02-01)",
         ));
 }
 
@@ -108,15 +103,12 @@ fn show_prints_one_statement_in_full() {
 
     // the source location, so the reader can go and find it
     assert!(
-        stdout.contains("tests/fixtures/clean/retry.py:3"),
+        stdout.contains("tests/fixtures/clean/retry.py:6"),
         "no source location in:\n{stdout}"
     );
     // reflowed onto one line per paragraph, rather than as it was wrapped in the comment
     assert!(
-        stdout.contains(
-            "In the context of talking to an upstream service that occasionally rejects requests, \
-             we faced the question of how quickly to retry."
-        ),
+        stdout.contains("In the context of <ctx>, we faced <con>."),
         "paragraph was not reflowed in:\n{stdout}"
     );
     // and only the statement that was asked for
