@@ -1,8 +1,3 @@
-// A fixture for yadr's end-to-end tests. Never executed or type-checked; only ever read as text.
-//
-// The body carries both JSX and a type annotation, so the file is only parseable by the TSX
-// grammar.
-
 /**
  * YADR: 1970-01-04 <title>
  *

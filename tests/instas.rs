@@ -401,8 +401,6 @@ export function fetchAll() {}
     );
 }
 
-/// This is the TypeScript counterpart of [`pytest_assertion_introspection`]: it guards the case
-/// where the grammar hands back something that merely *looks* like a comment.
 #[test]
 fn comment_lookalikes_ts() {
     harness!(
@@ -446,8 +444,6 @@ export function fetchAll() {}
     );
 }
 
-/// The second paragraph opens with "We settled on" where the format calls for "We decided for", so
-/// the diagnostic should name paragraph 2.
 #[test]
 fn malformed_para_ts() {
     harness!(
@@ -497,7 +493,6 @@ export function Banner({ message }) {
     );
 }
 
-/// The same statement spread over one container per line, which is *not* supported.
 #[test]
 fn jsx_expression_comment_run_is_rejected() {
     harness!(

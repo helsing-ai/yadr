@@ -485,8 +485,7 @@ fn find_yadr_sections_tree_sitter(
         Language::Python => tree_sitter_python::LANGUAGE.into(),
         Language::Nix => tree_sitter_nix::LANGUAGE.into(),
         Language::TypeScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
-        // TypeScript being a superset of JavaScript means the typescript treesitter parser can be
-        // trivially re-used
+        // TypeScript grammar also parses JavaScript.
         Language::JavaScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
         Language::TypeScriptXML => tree_sitter_typescript::LANGUAGE_TSX.into(),
         Language::JavaScriptXML => tree_sitter_typescript::LANGUAGE_TSX.into(),
@@ -534,9 +533,6 @@ fn find_yadr_sections_tree_sitter(
                         text.trim_start()
                     } else if let Some(text) = text.strip_prefix("//") {
                         // line comment e.g. TypeScript
-                        //
-                        // checked ahead of the `/*` arm below only for tidiness; the two prefixes
-                        // are distinct, so the order doesn't matter.
                         text.trim_start()
                     } else if let Some(text) = text.strip_prefix("/*") {
                         // Block comment
