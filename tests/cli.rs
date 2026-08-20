@@ -11,9 +11,8 @@
 use assert_cmd::Command;
 use predicates::prelude::*;
 
-/// A tree of three files, one per supported language, holding four valid Y-Statements between
-/// them, dated 2024-01-15, 2024-01-22, 2024-03-02, and 2024-04-09. `storage.rs` holds the first
-/// two so that per-file grouping in `list` output gets exercised.
+/// A tree of files, one per supported language, holding valid Y-Statements.
+/// `storage.rs` holds two so that per-file grouping in `list` output gets exercised.
 const CLEAN: &str = "tests/fixtures/clean";
 
 /// A tree holding a single Y-Statement, dated 2024-05-20, whose second paragraph doesn't follow
@@ -35,7 +34,7 @@ fn stdout_of(assert: assert_cmd::assert::Assert) -> String {
 }
 
 #[test]
-fn list_finds_statements_in_every_supported_language() {
+fn list_finds_statements_in_fixture_tree() {
     yadr()
         .args(["ls", CLEAN])
         .assert()
@@ -43,7 +42,10 @@ fn list_finds_statements_in_every_supported_language() {
         .stdout(predicate::str::contains("2024-01-15 <title>"))
         .stdout(predicate::str::contains("2024-01-22 <title>"))
         .stdout(predicate::str::contains("2024-03-02 <title>"))
-        .stdout(predicate::str::contains("2024-04-09 <title>"));
+        .stdout(predicate::str::contains("2024-04-09 <title>"))
+        .stdout(predicate::str::contains("1970-01-02 <title>"))
+        .stdout(predicate::str::contains("1970-01-03 <title>"))
+        .stdout(predicate::str::contains("1970-01-04 <title>"));
 }
 
 /// The two statements in `storage.rs` should appear under a single `==>` heading for that file,
@@ -53,7 +55,7 @@ fn list_groups_statements_under_their_file() {
     let stdout = stdout_of(yadr().args(["ls", CLEAN]).assert().success());
 
     let headings: Vec<_> = stdout.lines().filter(|l| l.starts_with("==>")).collect();
-    assert_eq!(headings.len(), 3, "one heading per file, in:\n{stdout}");
+    assert_eq!(headings.len(), 6, "one heading per file, in:\n{stdout}");
     assert_eq!(
         stdout.matches("storage.rs").count(),
         1,
@@ -83,6 +85,9 @@ fn list_only_files_names_files_and_nothing_else() {
     assert_eq!(
         lines,
         [
+            "tests/fixtures/clean/banner.jsx",
+            "tests/fixtures/clean/cache.js",
+            "tests/fixtures/clean/panel.tsx",
             "tests/fixtures/clean/retry.py",
             "tests/fixtures/clean/storage.rs",
             "tests/fixtures/clean/toolchain.nix",
@@ -115,6 +120,30 @@ fn show_prints_one_statement_in_full() {
     assert!(
         !stdout.contains("2024-01-15"),
         "showed an unrequested statement in:\n{stdout}"
+    );
+}
+
+/// `banner.jsx` writes its statement inside JSX markup, in a single `{/* ... */}` container.
+#[test]
+fn show_reads_a_statement_inside_jsx_markup() {
+    let stdout = stdout_of(
+        yadr()
+            .args(["show", "1970-01-03", CLEAN])
+            .assert()
+            .success(),
+    );
+
+    assert!(
+        stdout.contains("tests/fixtures/clean/banner.jsx:4"),
+        "no source location in:\n{stdout}"
+    );
+    assert!(
+        stdout.contains("In the context of <in_context>, we faced <facing_concern>."),
+        "paragraph was not reflowed in:\n{stdout}"
+    );
+    assert!(
+        !stdout.contains("A lone JSX comment"),
+        "an unrelated JSX comment joined the statement in:\n{stdout}"
     );
 }
 

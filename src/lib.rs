@@ -170,11 +170,27 @@ pub enum Language {
     Python,
     /// `.nix`
     Nix,
+    /// `.ts`
+    TypeScript,
+    /// `.js`
+    JavaScript,
+    /// `.tsx`
+    TypeScriptXML,
+    /// `.jsx`
+    JavaScriptXML,
 }
 
 impl Language {
     /// Every language this version of `yadr` can parse.
-    pub const ALL: &'static [Language] = &[Language::Rust, Language::Python, Language::Nix];
+    pub const ALL: &'static [Language] = &[
+        Language::Rust,
+        Language::Python,
+        Language::Nix,
+        Language::TypeScript,
+        Language::JavaScript,
+        Language::TypeScriptXML,
+        Language::JavaScriptXML,
+    ];
 
     /// Returns the language conventionally written in files with the given extension.
     ///
@@ -193,6 +209,10 @@ impl Language {
             "rs" => Some(Language::Rust),
             "py" => Some(Language::Python),
             "nix" => Some(Language::Nix),
+            "ts" => Some(Language::TypeScript),
+            "js" => Some(Language::JavaScript),
+            "tsx" => Some(Language::TypeScriptXML),
+            "jsx" => Some(Language::JavaScriptXML),
             _ => None,
         }
     }
@@ -206,6 +226,10 @@ impl Language {
             Language::Rust => "rs",
             Language::Python => "py",
             Language::Nix => "nix",
+            Language::TypeScript => "ts",
+            Language::JavaScript => "js",
+            Language::TypeScriptXML => "tsx",
+            Language::JavaScriptXML => "jsx",
         }
     }
 
@@ -215,6 +239,10 @@ impl Language {
             Language::Rust => "rust",
             Language::Python => "python",
             Language::Nix => "nix",
+            Language::TypeScript => "typescript",
+            Language::JavaScript => "javascript",
+            Language::TypeScriptXML => "typescriptxml",
+            Language::JavaScriptXML => "javascriptxml",
         }
     }
 }
@@ -456,6 +484,11 @@ fn find_yadr_sections_tree_sitter(
     let ts_language = match language {
         Language::Python => tree_sitter_python::LANGUAGE.into(),
         Language::Nix => tree_sitter_nix::LANGUAGE.into(),
+        Language::TypeScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+        // TypeScript grammar also parses JavaScript.
+        Language::JavaScript => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+        Language::TypeScriptXML => tree_sitter_typescript::LANGUAGE_TSX.into(),
+        Language::JavaScriptXML => tree_sitter_typescript::LANGUAGE_TSX.into(),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     };
     let mut parser = Parser::new();
@@ -472,7 +505,11 @@ fn find_yadr_sections_tree_sitter(
             &ts_language,
             "([(comment)+ @comments (expression_statement (string) @docstr)])",
         ),
-        Language::Nix => Query::new(&ts_language, "((comment)+ @comments)"),
+        Language::Nix
+        | Language::TypeScript
+        | Language::JavaScript
+        | Language::JavaScriptXML
+        | Language::TypeScriptXML => Query::new(&ts_language, "((comment)+ @comments)"),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     }
     .into_diagnostic()
@@ -493,6 +530,9 @@ fn find_yadr_sections_tree_sitter(
                     /* @comment */
                     if let Some(text) = text.strip_prefix("#") {
                         // line comment e.g. Python / Nix
+                        text.trim_start()
+                    } else if let Some(text) = text.strip_prefix("//") {
+                        // line comment e.g. TypeScript
                         text.trim_start()
                     } else if let Some(text) = text.strip_prefix("/*") {
                         // Block comment
