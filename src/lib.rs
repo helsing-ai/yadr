@@ -170,6 +170,8 @@ pub enum Language {
     Python,
     /// `.nix`
     Nix,
+    /// `.toml`
+    Toml,
 }
 
 impl Language {
@@ -193,6 +195,7 @@ impl Language {
             "rs" => Some(Language::Rust),
             "py" => Some(Language::Python),
             "nix" => Some(Language::Nix),
+            "toml" => Some(Language::Toml),
             _ => None,
         }
     }
@@ -206,6 +209,7 @@ impl Language {
             Language::Rust => "rs",
             Language::Python => "py",
             Language::Nix => "nix",
+            Language::Toml => "toml",
         }
     }
 
@@ -215,6 +219,7 @@ impl Language {
             Language::Rust => "rust",
             Language::Python => "python",
             Language::Nix => "nix",
+            Language::Toml => "toml",
         }
     }
 }
@@ -456,6 +461,7 @@ fn find_yadr_sections_tree_sitter(
     let ts_language = match language {
         Language::Python => tree_sitter_python::LANGUAGE.into(),
         Language::Nix => tree_sitter_nix::LANGUAGE.into(),
+        Language::Toml => tree_sitter_toml_ng::LANGUAGE.into(),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     };
     let mut parser = Parser::new();
@@ -473,6 +479,7 @@ fn find_yadr_sections_tree_sitter(
             "([(comment)+ @comments (expression_statement (string) @docstr)])",
         ),
         Language::Nix => Query::new(&ts_language, "((comment)+ @comments)"),
+        Language::Toml => Query::new(&ts_language, "((comment)+ @comments)"),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     }
     .into_diagnostic()
@@ -937,7 +944,7 @@ fn better_error(comment: &str) -> miette::Report {
         };
         return miette! {
                 labels = vec![LabeledSpan::at(comment.len() + 1..comment.len() + 4, format!("expected {}", YADR_PARAGRAPH_REGEXES[saw_n_valid].0))],
-                "Y-Statement is missing {nparagraphs}.", 
+                "Y-Statement is missing {nparagraphs}.",
             }
             .with_source_code(format!("{comment}\n   "));
     }

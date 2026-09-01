@@ -410,6 +410,24 @@ fn early_termination_with_changes() {
     );
 }
 
+#[test]
+fn hashes_toml() {
+    harness!(
+        Toml,
+        r#"
+# YADR: 2023-11-30 <title>
+# In the context of <ctx>, we faced <con>.
+#
+# We decided for <opt>, and neglected <alt>.
+#
+# We did this to achieve <qua>, accepting
+# <dwn>.
+#
+# We think this is the right trade-off because <why>.
+"#
+    );
+}
+
 /// Parses a Y-Statement taken verbatim from a real code base (the [`dson`] crate) rather than one
 /// written to fit the parser, so that we notice if the format only works for prose we wrote
 /// ourselves.
@@ -649,7 +667,7 @@ fn empty_title() {
         Rust,
         r#"
 /*
- * YADR:   
+ * YADR:
  * In the context of <ctx>, we faced <con>.
  *
  * We decided for <opt>, and neglected <alt>.
