@@ -1,0 +1,12 @@
+# YADR: 2026-04-02 <title>
+#
+# In the context of <ctx>, we
+# faced <con>.
+#
+# We decided for <opt>, and neglected <alt>.
+#
+# We did this to achieve <qua>, accepting <dwn>.
+#
+# We think this is the right trade-off because <why>.
+toolchain:
+  python:

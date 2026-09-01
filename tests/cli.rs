@@ -43,6 +43,8 @@ fn list_finds_statements_in_every_supported_language() {
         .stdout(predicate::str::contains("2024-01-15 <title>"))
         .stdout(predicate::str::contains("2024-01-22 <title>"))
         .stdout(predicate::str::contains("2024-03-02 <title>"))
+        .stdout(predicate::str::contains("2026-03-02 <title>"))
+        .stdout(predicate::str::contains("2026-04-02 <title>"))
         .stdout(predicate::str::contains("2024-04-09 <title>"));
 }
 
@@ -53,7 +55,12 @@ fn list_groups_statements_under_their_file() {
     let stdout = stdout_of(yadr().args(["ls", CLEAN]).assert().success());
 
     let headings: Vec<_> = stdout.lines().filter(|l| l.starts_with("==>")).collect();
-    assert_eq!(headings.len(), 3, "one heading per file, in:\n{stdout}");
+    assert_eq!(headings.len(), 6, "one heading per file, in:\n{stdout}");
+    assert_eq!(
+        stdout.matches("data.json").count(),
+        1,
+        "data.json holds two statements but should be named once, in:\n{stdout}"
+    );
     assert_eq!(
         stdout.matches("storage.rs").count(),
         1,
@@ -83,7 +90,10 @@ fn list_only_files_names_files_and_nothing_else() {
     assert_eq!(
         lines,
         [
+            "tests/fixtures/clean/config.toml",
+            "tests/fixtures/clean/data.json",
             "tests/fixtures/clean/retry.py",
+            "tests/fixtures/clean/settings.yaml",
             "tests/fixtures/clean/storage.rs",
             "tests/fixtures/clean/toolchain.nix",
         ],

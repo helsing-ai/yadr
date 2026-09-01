@@ -170,11 +170,24 @@ pub enum Language {
     Python,
     /// `.nix`
     Nix,
+    /// `.toml`
+    Toml,
+    /// `.yaml`
+    Yaml,
+    /// `.json`
+    Json,
 }
 
 impl Language {
     /// Every language this version of `yadr` can parse.
-    pub const ALL: &'static [Language] = &[Language::Rust, Language::Python, Language::Nix];
+    pub const ALL: &'static [Language] = &[
+        Language::Rust,
+        Language::Python,
+        Language::Nix,
+        Language::Toml,
+        Language::Yaml,
+        Language::Json,
+    ];
 
     /// Returns the language conventionally written in files with the given extension.
     ///
@@ -193,6 +206,9 @@ impl Language {
             "rs" => Some(Language::Rust),
             "py" => Some(Language::Python),
             "nix" => Some(Language::Nix),
+            "toml" => Some(Language::Toml),
+            "yaml" => Some(Language::Yaml),
+            "json" => Some(Language::Json),
             _ => None,
         }
     }
@@ -206,6 +222,9 @@ impl Language {
             Language::Rust => "rs",
             Language::Python => "py",
             Language::Nix => "nix",
+            Language::Toml => "toml",
+            Language::Yaml => "yaml",
+            Language::Json => "json",
         }
     }
 
@@ -215,6 +234,9 @@ impl Language {
             Language::Rust => "rust",
             Language::Python => "python",
             Language::Nix => "nix",
+            Language::Toml => "toml",
+            Language::Yaml => "yaml",
+            Language::Json => "json",
         }
     }
 }
@@ -456,6 +478,9 @@ fn find_yadr_sections_tree_sitter(
     let ts_language = match language {
         Language::Python => tree_sitter_python::LANGUAGE.into(),
         Language::Nix => tree_sitter_nix::LANGUAGE.into(),
+        Language::Toml => tree_sitter_toml_ng::LANGUAGE.into(),
+        Language::Yaml => tree_sitter_yaml::LANGUAGE.into(),
+        Language::Json => tree_sitter_json::LANGUAGE.into(),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     };
     let mut parser = Parser::new();
@@ -472,7 +497,9 @@ fn find_yadr_sections_tree_sitter(
             &ts_language,
             "([(comment)+ @comments (expression_statement (string) @docstr)])",
         ),
-        Language::Nix => Query::new(&ts_language, "((comment)+ @comments)"),
+        Language::Nix | Language::Toml | Language::Yaml | Language::Json => {
+            Query::new(&ts_language, "((comment)+ @comments)")
+        }
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     }
     .into_diagnostic()
@@ -494,6 +521,9 @@ fn find_yadr_sections_tree_sitter(
                     if let Some(text) = text.strip_prefix("#") {
                         // line comment e.g. Python / Nix
                         text.trim_start()
+                    } else if let Some(text) = text.strip_prefix("//") {
+                        // line comment e.g. Json
+                        text.trim_start()
                     } else if let Some(text) = text.strip_prefix("/*") {
                         // Block comment
 
@@ -505,7 +535,7 @@ fn find_yadr_sections_tree_sitter(
                             "",
                         )
                     } else {
-                        miette::bail!("Found unexpected prefix in text {}", text)
+                        miette::bail!("Found unexpected prefix in text {}", text);
                     }
                 }
                 1 => {
@@ -937,7 +967,7 @@ fn better_error(comment: &str) -> miette::Report {
         };
         return miette! {
                 labels = vec![LabeledSpan::at(comment.len() + 1..comment.len() + 4, format!("expected {}", YADR_PARAGRAPH_REGEXES[saw_n_valid].0))],
-                "Y-Statement is missing {nparagraphs}.", 
+                "Y-Statement is missing {nparagraphs}.",
             }
             .with_source_code(format!("{comment}\n   "));
     }

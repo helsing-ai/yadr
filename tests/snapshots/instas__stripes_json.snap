@@ -1,0 +1,22 @@
+---
+source: tests/instas.rs
+expression: v
+---
+[
+    (
+        2,
+        YAdr {
+            date: 2023-11-30,
+            title: "2023-11-30 <title>",
+            in_context: "<ctx>",
+            facing_concern: "<con>",
+            chosen_option: "<opt>",
+            neglected_options: "<alt>",
+            to_achieve: "<qua>",
+            accepted_downsides: "<dwn>",
+            because: "<why>",
+            tail: None,
+            changes: [],
+        },
+    ),
+]
