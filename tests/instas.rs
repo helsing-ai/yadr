@@ -60,9 +60,49 @@ fn stars() {
 }
 
 #[test]
+fn stars_json() {
+    harness!(
+        Json,
+        r#"
+/*
+ * YADR: 2023-11-29 <title>
+ * In the context of <ctx>, we faced <con>.
+ *
+ * We decided for <opt>, and neglected <alt>.
+ *
+ * We did this to achieve <qua>, accepting
+ * <dwn>.
+ *
+ * We think this is the right trade-off because <why>.
+ *
+ * <tail>
+ */
+"#
+    );
+}
+
+#[test]
 fn stripes() {
     harness!(
         Rust,
+        r#"
+// YADR: 2023-11-30 <title>
+// In the context of <ctx>, we faced <con>.
+//
+// We decided for <opt>, and neglected <alt>.
+//
+// We did this to achieve <qua>, accepting
+// <dwn>.
+//
+// We think this is the right trade-off because <why>.
+"#
+    );
+}
+
+#[test]
+fn stripes_json() {
+    harness!(
+        Json,
         r#"
 // YADR: 2023-11-30 <title>
 // In the context of <ctx>, we faced <con>.

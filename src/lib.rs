@@ -172,6 +172,10 @@ pub enum Language {
     Nix,
     /// `.toml`
     Toml,
+    /// `.yaml`
+    Yaml,
+    /// `.json`
+    Json,
 }
 
 impl Language {
@@ -181,6 +185,8 @@ impl Language {
         Language::Python,
         Language::Nix,
         Language::Toml,
+        Language::Yaml,
+        Language::Json,
     ];
 
     /// Returns the language conventionally written in files with the given extension.
@@ -201,6 +207,8 @@ impl Language {
             "py" => Some(Language::Python),
             "nix" => Some(Language::Nix),
             "toml" => Some(Language::Toml),
+            "yaml" => Some(Language::Yaml),
+            "json" => Some(Language::Json),
             _ => None,
         }
     }
@@ -215,6 +223,8 @@ impl Language {
             Language::Python => "py",
             Language::Nix => "nix",
             Language::Toml => "toml",
+            Language::Yaml => "yaml",
+            Language::Json => "json",
         }
     }
 
@@ -225,6 +235,8 @@ impl Language {
             Language::Python => "python",
             Language::Nix => "nix",
             Language::Toml => "toml",
+            Language::Yaml => "yaml",
+            Language::Json => "json",
         }
     }
 }
@@ -467,6 +479,8 @@ fn find_yadr_sections_tree_sitter(
         Language::Python => tree_sitter_python::LANGUAGE.into(),
         Language::Nix => tree_sitter_nix::LANGUAGE.into(),
         Language::Toml => tree_sitter_toml_ng::LANGUAGE.into(),
+        Language::Yaml => tree_sitter_yaml::LANGUAGE.into(),
+        Language::Json => tree_sitter_json::LANGUAGE.into(),
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     };
     let mut parser = Parser::new();
@@ -483,8 +497,9 @@ fn find_yadr_sections_tree_sitter(
             &ts_language,
             "([(comment)+ @comments (expression_statement (string) @docstr)])",
         ),
-        Language::Nix => Query::new(&ts_language, "((comment)+ @comments)"),
-        Language::Toml => Query::new(&ts_language, "((comment)+ @comments)"),
+        Language::Nix | Language::Toml | Language::Yaml | Language::Json => {
+            Query::new(&ts_language, "((comment)+ @comments)")
+        }
         Language::Rust => unreachable!("`find_yadr_sections_tree_sitter` never called with rust."),
     }
     .into_diagnostic()
@@ -505,6 +520,9 @@ fn find_yadr_sections_tree_sitter(
                     /* @comment */
                     if let Some(text) = text.strip_prefix("#") {
                         // line comment e.g. Python / Nix
+                        text.trim_start()
+                    } else if let Some(text) = text.strip_prefix("//") {
+                        // line comment e.g. Json
                         text.trim_start()
                     } else if let Some(text) = text.strip_prefix("/*") {
                         // Block comment
