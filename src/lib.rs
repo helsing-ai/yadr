@@ -517,7 +517,7 @@ fn find_yadr_sections_tree_sitter(
                             "",
                         )
                     } else {
-                        miette::bail!("Found unexpected prefix in text {}", text)
+                        miette::bail!("Found unexpected prefix in text {}", text);
                     }
                 }
                 1 => {
