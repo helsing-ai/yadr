@@ -667,7 +667,7 @@ fn empty_title() {
         Rust,
         r#"
 /*
- * YADR:
+ * YADR:   
  * In the context of <ctx>, we faced <con>.
  *
  * We decided for <opt>, and neglected <alt>.

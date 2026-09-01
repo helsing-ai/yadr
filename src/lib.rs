@@ -176,7 +176,12 @@ pub enum Language {
 
 impl Language {
     /// Every language this version of `yadr` can parse.
-    pub const ALL: &'static [Language] = &[Language::Rust, Language::Python, Language::Nix];
+    pub const ALL: &'static [Language] = &[
+        Language::Rust,
+        Language::Python,
+        Language::Nix,
+        Language::Toml,
+    ];
 
     /// Returns the language conventionally written in files with the given extension.
     ///
