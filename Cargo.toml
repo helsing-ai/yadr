@@ -7,7 +7,7 @@ edition = "2021"
 # Set by `ra_ap_syntax`, which is rust-analyzer's parser and tracks the compiler closely; it has
 # required the then-current stable release at every version we've used. In practice that makes
 # yadr's MSRV "latest stable", so treat a bump here as routine rather than as a policy change.
-rust-version = "1.95.0"
+rust-version = "1.98.0"
 description = "Command-line tool for accessing Y-Statement-style ADRs in code comments."
 authors = ["jon.gjengset@helsing.ai"]
 repository = "https://github.com/helsing-ai/yadr"
@@ -30,10 +30,10 @@ ignore = "0.4.22"
 # weight here. Do not restore the defaults without a reason to.
 jiff = { version = "0.2.35", default-features = false, features = ["std"] }
 miette = { version = "7.2.0", features = ["fancy"] }
-ra_ap_syntax = "0.0.345"
+ra_ap_syntax = "0.0.352"
 regex = "1.10.4"
 streaming-iterator = "0.1.9"
-tree-sitter = "0.26.0"
+tree-sitter = "0.27.0"
 tree-sitter-nix = "0.3.0"
 tree-sitter-python = "0.25.0"
 
@@ -41,3 +41,7 @@ tree-sitter-python = "0.25.0"
 assert_cmd = "2.2.2"
 insta = "1.38.0"
 predicates = "3.1.4"
+
+# for minimal-versions
+[target.'cfg(any())'.dependencies]
+text-size = { version = "1.1.1", optional = true } # ra_ap_syntax 0.0.352 uses `TextSize::new`, but rowan only asks for 1.1.0
