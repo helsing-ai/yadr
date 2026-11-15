@@ -339,6 +339,14 @@ fn find_yadr_sections_rs(
         if let WalkEvent::Leave(_) = token {
             continue;
         }
+        // rust-analyzer wraps each doc comment (`//!`, `/*!`, `///`, `/**`) in its own
+        // `DOC_COMMENT` node. Entering that node is not a "real" node boundary as far as comment
+        // sequences go, so it must not end the current sequence the way other nodes do below.
+        if let WalkEvent::Enter(NodeOrToken::Node(node)) = &token {
+            if node.kind() == SyntaxKind::DOC_COMMENT {
+                continue;
+            }
+        }
         let WalkEvent::Enter(NodeOrToken::Token(token)) = token else {
             if !on_comment_end(&mut consecutive_comments, &mut on_yadr)? {
                 break;
@@ -346,7 +354,9 @@ fn find_yadr_sections_rs(
             continue;
         };
         match token.kind() {
-            SyntaxKind::COMMENT => {
+            // Doc comments get their own token kinds, but are otherwise handled just like
+            // regular comments; outer ones (`///`, `/**`) are filtered out by prefix below.
+            SyntaxKind::COMMENT | SyntaxKind::INNER_DOC_COMMENT | SyntaxKind::OUTER_DOC_COMMENT => {
                 let start: usize = token.text_range().start().into();
                 // NOTE: .split('\n') rather than .lines(), since .lines() special-cases trailing newline
                 let start_line = line_at_byte.1
@@ -482,7 +492,7 @@ fn find_yadr_sections_tree_sitter(
 
     let mut consecutive_comments = None;
     'all: while let Some((capture, _)) = captures.next() {
-        let captured = capture.captures;
+        let captured = capture.captures();
         let mut last_line = 0;
         for QueryCapture { node, index } in captured {
             let mut text = node
