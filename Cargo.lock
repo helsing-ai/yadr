@@ -1241,6 +1241,7 @@ dependencies = [
  "ra_ap_syntax",
  "regex",
  "streaming-iterator",
+ "text-size",
  "tree-sitter",
  "tree-sitter-nix",
  "tree-sitter-python",

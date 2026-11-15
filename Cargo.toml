@@ -41,3 +41,7 @@ tree-sitter-python = "0.25.0"
 assert_cmd = "2.2.2"
 insta = "1.38.0"
 predicates = "3.1.4"
+
+# for minimal-versions
+[target.'cfg(any())'.dependencies]
+text-size = { version = "1.1.1", optional = true } # ra_ap_syntax 0.0.352 uses `TextSize::new`, but rowan only asks for 1.1.0
