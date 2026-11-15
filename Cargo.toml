@@ -7,7 +7,7 @@ edition = "2021"
 # Set by `ra_ap_syntax`, which is rust-analyzer's parser and tracks the compiler closely; it has
 # required the then-current stable release at every version we've used. In practice that makes
 # yadr's MSRV "latest stable", so treat a bump here as routine rather than as a policy change.
-rust-version = "1.95.0"
+rust-version = "1.98.0"
 description = "Command-line tool for accessing Y-Statement-style ADRs in code comments."
 authors = ["jon.gjengset@helsing.ai"]
 repository = "https://github.com/helsing-ai/yadr"

@@ -92,7 +92,7 @@ jobs:
     # https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
     strategy:
       matrix:
-        msrv: ["1.95.0"] # ra_ap_syntax
+        msrv: ["1.98.0"] # ra_ap_syntax
     name: ubuntu / ${{ matrix.msrv }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # tag=v7.0.1
