@@ -96,6 +96,17 @@ jobs:
     name: ubuntu / ${{ matrix.msrv }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # tag=v7.0.1
+      # The MSRV is what this crate _could_ build with if its dependencies were downgraded as far
+      # as Cargo.toml allows, not whatever the newest release of each dependency happens to need.
+      # So rather than check against the committed Cargo.lock (which dependabot keeps at the latest
+      # versions), we re-resolve with the MSRV-aware resolver, which picks the newest versions whose
+      # `rust-version` is compatible with ours. That resolver needs cargo 1.84+, which the MSRV
+      # toolchain need not be, so we resolve with stable and only build with the MSRV toolchain.
+      # Stable is installed first so that the MSRV toolchain ends up as the default.
+      - name: Install stable
+        uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
+        with:
+          toolchain: stable
       - name: Install ${{ matrix.msrv }}
         uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # branch=master
         with:
@@ -104,8 +115,12 @@ jobs:
         with:
           path: ~/.cargo
           key: ${{ runner.os }}-cargo
+      - name: cargo +stable update (MSRV-aware)
+        run: cargo +stable update
+        env:
+          CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: fallback
       - name: cargo +${{ matrix.msrv }} check
-        run: cargo check
+        run: cargo +${{ matrix.msrv }} check --locked
   dogfood:
     # A tool for keeping Y-Statements well-formed ought to keep its own well-formed. This is also
     # the only check that exercises the binary the way a user would, over a tree it didn't choose.
