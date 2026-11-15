@@ -33,7 +33,7 @@ miette = { version = "7.2.0", features = ["fancy"] }
 ra_ap_syntax = "0.0.345"
 regex = "1.10.4"
 streaming-iterator = "0.1.9"
-tree-sitter = "0.26.0"
+tree-sitter = "0.27.0"
 tree-sitter-nix = "0.3.0"
 tree-sitter-python = "0.25.0"
 

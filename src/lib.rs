@@ -482,7 +482,7 @@ fn find_yadr_sections_tree_sitter(
 
     let mut consecutive_comments = None;
     'all: while let Some((capture, _)) = captures.next() {
-        let captured = capture.captures;
+        let captured = capture.captures();
         let mut last_line = 0;
         for QueryCapture { node, index } in captured {
             let mut text = node
