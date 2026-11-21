@@ -1,0 +1,22 @@
+---
+source: tests/instas.rs
+expression: v
+---
+[
+    (
+        5,
+        YAdr {
+            date: 2024-10-03,
+            title: "2024-10-03 Label the panel from its title",
+            in_context: "<use case/user story u>",
+            facing_concern: "<concern c>",
+            chosen_option: "<option o>",
+            neglected_options: "<other options>",
+            to_achieve: "<system qualities/desired consequences>",
+            accepted_downsides: "<downside d/undesired consequences>",
+            because: "<additional rationale>",
+            tail: None,
+            changes: [],
+        },
+    ),
+]

@@ -95,6 +95,22 @@ For example, here is one taken from the [`dson`] crate:
  */
 ```
 
+### Y-Statements in JSX and TSX
+
+In `.jsx` and `.tsx` files, a statement placed inside JSX markup has to be written in a **single** `{/* ... */}` container:
+
+```jsx
+<aside role="status">
+  {/*
+   * YADR: YYYY-MM-DD some title
+   *
+   * In the context of {use case/user story u}, we faced {concern c}.
+   *
+   * ...
+   */}
+</aside>
+```
+
 [ADRs]: https://adr.github.io/
 [MADR]: https://adr.github.io/madr/
 [ystmt]: https://medium.com/olzzio/y-statements-10eb07b5a177

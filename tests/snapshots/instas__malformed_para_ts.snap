@@ -1,0 +1,19 @@
+---
+source: tests/instas.rs
+expression: "format! (\"{e:?}\")"
+---
+  x in comment on line 2
+  |-> in Y-Statement starting on line 3
+  |-> in paragraph 2 of that statement
+  `-> Y-Statement did not match expected format
+   ,-[3:2]
+ 1 |  In the context of <use case/user story u>, we faced <concern c>.
+ 2 | 
+ 3 |  We settled on <option o>, and passed over <other options>.
+   :  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   :                               `-- expected "We decided for <..>, and neglected <..>."
+ 4 | 
+ 5 |  We did this to achieve <system qualities/desired consequences>, accepting
+ 6 |  <downside d/undesired consequences>.
+   `----
+  help: Note that punctuation is significant; you have to match every , and .

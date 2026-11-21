@@ -313,6 +313,240 @@ We think this is the right trade-off because <why>.
 }
 
 #[test]
+fn stripes_ts() {
+    harness!(
+        TypeScript,
+        r#"
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn block_ts() {
+    harness!(
+        TypeScript,
+        r#"
+/*
+ * YADR: 2023-11-30 bar-baz
+ * In the context of <use case/user story u>, we faced <concern c>.
+ *
+ * We decided for <option o>, and neglected <other options>.
+ *
+ * We did this to achieve <system qualities/desired consequences>, accepting
+ * <downside d/undesired consequences>.
+ *
+ * We think this is the right trade-off because <additional rationale>.
+ */
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn jsdoc_ts() {
+    harness!(
+        TypeScript,
+        r#"
+/** YADR: 2023-11-30 bar-baz
+ * In the context of <use case/user story u>, we faced <concern c>.
+ *
+ * We decided for <option o>, and neglected <other options>.
+ *
+ * We did this to achieve <system qualities/desired consequences>, accepting
+ * <downside d/undesired consequences>.
+ *
+ * We think this is the right trade-off because <additional rationale>.
+ **/
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn two_in_one_ts() {
+    harness!(
+        TypeScript,
+        r#"
+// YADR: 2023-11-29 foo-bar also
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+//
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn comment_lookalikes_ts() {
+    harness!(
+        TypeScript,
+        r#"
+const endpoint = "https://example.com/v1 // YADR: 2023-11-30 not-a-comment";
+const template = `https://example.com/v2 // YADR: 2023-11-30 also-not-a-comment`;
+const opener = "/* YADR: 2023-11-30 still-not-a-comment";
+const stripComments = /\/\/.*$/gm;
+
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+//
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn blank_line_splits_stripes_ts() {
+    harness!(
+        TypeScript,
+        r#"
+// YADR: 2023-11-30 bar-baz
+// In the context of <use case/user story u>, we faced <concern c>.
+//
+// We decided for <option o>, and neglected <other options>.
+
+// We did this to achieve <system qualities/desired consequences>, accepting
+// <downside d/undesired consequences>.
+//
+// We think this is the right trade-off because <additional rationale>.
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn malformed_para_ts() {
+    harness!(
+        TypeScript,
+        r#"
+/**
+ * YADR: 2023-11-29 foo-bar also
+ * In the context of <use case/user story u>, we faced <concern c>.
+ *
+ * We settled on <option o>, and passed over <other options>.
+ *
+ * We did this to achieve <system qualities/desired consequences>, accepting
+ * <downside d/undesired consequences>.
+ *
+ * We think this is the right trade-off because <additional rationale>.
+ */
+export function fetchAll() {}
+"#
+    );
+}
+
+#[test]
+fn jsx_expression_comment() {
+    harness!(
+        JavaScriptXML,
+        r#"
+export function Banner({ message }) {
+  return (
+    <aside role="status">
+      {/*
+       * YADR: 2024-10-01 Announce via a live region
+       *
+       * In the context of <use case/user story u>, we faced <concern c>.
+       *
+       * We decided for <option o>, and neglected <other options>.
+       *
+       * We did this to achieve <system qualities/desired consequences>, accepting
+       * <downside d/undesired consequences>.
+       *
+       * We think this is the right trade-off because <additional rationale>.
+       */}
+      {message}
+    </aside>
+  );
+}
+"#
+    );
+}
+
+#[test]
+fn jsx_expression_comment_run_is_rejected() {
+    harness!(
+        JavaScriptXML,
+        r#"
+export function Row({ cells }) {
+  return (
+    <tr>
+      {/* YADR: 2024-10-02 Key rows by id */}
+      {/* */}
+      {/* In the context of <use case/user story u>, we faced <concern c>. */}
+      {/* */}
+      {/* We decided for <option o>, and neglected <other options>. */}
+      {/* */}
+      {/* We did this to achieve <system qualities/desired consequences>, accepting */}
+      {/* <downside d/undesired consequences>. */}
+      {/* */}
+      {/* We think this is the right trade-off because <additional rationale>. */}
+      {cells}
+    </tr>
+  );
+}
+"#
+    );
+}
+
+#[test]
+fn jsx_expression_comment_tsx() {
+    harness!(
+        TypeScriptXML,
+        r#"
+export function Panel({ title }: { title: string }) {
+  return (
+    <section aria-label={title}>
+      {/*
+       * YADR: 2024-10-03 Label the panel from its title
+       *
+       * In the context of <use case/user story u>, we faced <concern c>.
+       *
+       * We decided for <option o>, and neglected <other options>.
+       *
+       * We did this to achieve <system qualities/desired consequences>, accepting
+       * <downside d/undesired consequences>.
+       *
+       * We think this is the right trade-off because <additional rationale>.
+       */}
+    </section>
+  );
+}
+"#
+    );
+}
+
+#[test]
 fn early_termination_dashes() {
     harness!(
         Rust,
